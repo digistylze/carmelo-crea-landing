@@ -514,85 +514,6 @@ p { margin: 0; }
 
 
 
-#s-nuit { position: relative; color: var(--mist); background: #120d0b; overflow-x: clip; }
-#s-nuit .nuit-anchor { position: absolute; top: 0; left: 0; width: 1px; height: 1px; }
-#s-nuit .nuit__pin { position: relative; overflow: hidden; }
-#s-nuit .nuit__layers { position: absolute; inset: 0; }
-#s-nuit .nuit__layer { position: absolute; inset: 0; will-change: transform; }
-#s-nuit .nuit__layer--0 { background: radial-gradient(90% 80% at 80% 30%, #5a3220 0%, #2a1912 55%, #140e0c 100%); }
-#s-nuit .nuit__layer--1 { background: radial-gradient(90% 80% at 80% 30%, #1a2347 0%, #0d1226 55%, #07090f 100%); }
-#s-nuit .nuit__layer--2 { background: radial-gradient(90% 80% at 80% 30%, #9a6a63 0%, #5a3a49 50%, #241a26 100%); }
-#s-nuit .nuit__grid { position: relative; display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: 48px clamp(40px, 6vw, 110px); align-items: center; }
-#s-nuit .nuit__text .eyebrow { margin-bottom: 18px; }
-#s-nuit h2 { font-size: clamp(36px, 3.6vw, 60px); color: var(--pearl); max-width: 13em; }
-#s-nuit .nuit__lead { margin-top: 16px; max-width: 46ch; font-size: clamp(16px, 1vw, 18px); color: rgba(243, 238, 230, .78); }
-
-
-#s-nuit .nuit__steps { list-style: none; display: flex; gap: 6px; margin: 34px 0 0; padding: 0; }
-#s-nuit .nuit__steps li { flex: 1; padding-top: 12px; border-top: 2px solid rgba(243, 238, 230, .22); font-size: 12px; font-weight: 600; letter-spacing: .16em; text-transform: uppercase; color: rgba(243, 238, 230, .5); transition: border-color .5s var(--ease), color .5s var(--ease); }
-#s-nuit .nuit__steps li.is-on { border-color: var(--cembro); color: var(--pearl); }
-#s-nuit .nuit__phases { display: grid; margin-top: 22px; }
-#s-nuit .nuit__ph { grid-area: 1 / 1; }
-#s-nuit .nuit__range { font-size: 13px; font-weight: 600; letter-spacing: .14em; color: var(--cembro); font-variant-numeric: tabular-nums; }
-#s-nuit .nuit__ph h3 { margin: 8px 0 10px; font-size: clamp(28px, 2.4vw, 40px); color: var(--pearl); }
-#s-nuit .nuit__ph p:last-child { max-width: 44ch; color: rgba(243, 238, 230, .82); }
-#s-nuit .nuit__note { margin-top: 20px; font-size: 14px; color: rgba(243, 238, 230, .55); }
-
-
-#s-nuit .nuit__device { display: flex; flex-direction: column; align-items: center; }
-#s-nuit .nuit__screen {
-  width: min(100%, 400px); aspect-ratio: 1 / 1; padding: clamp(24px, 2.4vw, 36px);
-  display: flex; flex-direction: column; background: linear-gradient(160deg, #15181e, #0b0c10);
-  box-shadow: inset 0 0 0 1px rgba(243, 238, 230, .12), 0 40px 80px -30px rgba(0, 0, 0, .7), 0 0 0 10px #1a1c21, 0 0 0 11px rgba(243, 238, 230, .08);
-}
-#s-nuit .nuit__now { font-size: 12.5px; font-weight: 600; letter-spacing: .22em; text-transform: uppercase; color: var(--cembro); }
-#s-nuit .nuit__time { margin-top: auto; font-family: var(--f-display); font-weight: 500; font-size: clamp(76px, 7vw, 116px); line-height: .9; color: var(--pearl); font-variant-numeric: lining-nums tabular-nums; }
-#s-nuit .nuit__icons { list-style: none; display: flex; gap: 18px; margin: 18px 0 0; padding: 0; }
-#s-nuit .nuit__icons li { display: flex; align-items: center; gap: 7px; font-size: 12px; font-weight: 600; letter-spacing: .08em; color: rgba(243, 238, 230, .32); transition: color .5s var(--ease); }
-#s-nuit .nuit__icons svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
-#s-nuit .nuit__icons li.is-on { color: var(--pearl); }
-#s-nuit .nuit__icons li.is-on svg { color: var(--cembro); }
-#s-nuit .nuit__set { display: flex; align-items: center; gap: 10px; margin-top: auto; padding-top: 18px; border-top: 1px solid rgba(243, 238, 230, .14); }
-#s-nuit .nuit__set-label { margin-right: auto; font-size: 12.5px; font-weight: 600; letter-spacing: .2em; text-transform: uppercase; color: rgba(243, 238, 230, .65); }
-#s-nuit .nuit__wake { min-width: 3.4em; text-align: center; font-family: var(--f-display); font-weight: 500; font-size: 30px; line-height: 1; color: var(--pearl); font-variant-numeric: lining-nums tabular-nums; }
-#s-nuit .nuit__adj { display: grid; place-items: center; width: 44px; height: 44px; padding: 0; border: 0; cursor: pointer; background: transparent; color: var(--pearl); box-shadow: inset 0 0 0 1px rgba(243, 238, 230, .35); transition: background .3s var(--ease), color .3s var(--ease); }
-#s-nuit .nuit__adj svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 1.6; }
-#s-nuit .nuit__adj:hover { background: var(--pearl); color: var(--night); }
-#s-nuit .nuit__cap { margin-top: 26px; font-size: 13px; letter-spacing: .06em; color: rgba(243, 238, 230, .5); }
-
-
-@media (min-width: 1000px) {
-  #s-nuit .nuit__pin { height: 100vh; height: 100svh; min-height: 640px; display: flex; align-items: center; }
-  #s-nuit .nuit__grid { padding-top: 70px; }
-  #s-nuit .nuit__ph { visibility: hidden; }
-  #s-nuit .nuit__ph.is-on { visibility: visible; }
-}
-@media (min-width: 1000px) and (max-height: 760px) {
-  #s-nuit .nuit__steps { margin-top: 22px; }
-  #s-nuit .nuit__screen { width: min(100%, 340px); }
-}
-
-@media (max-width: 999px) {
-  #s-nuit .nuit__pin { padding: 76px 0 72px; }
-  #s-nuit .nuit__grid { grid-template-columns: minmax(0, 1fr); gap: 0; }
-  
-  #s-nuit .nuit__text { display: contents; }
-  #s-nuit .nuit__device { order: 2; margin: 40px 0 44px; }
-  #s-nuit .nuit__phases { order: 3; gap: 34px; margin: 0; }
-  #s-nuit .nuit__note { order: 4; }
-  #s-nuit .nuit__steps { display: none; }
-  #s-nuit .nuit__ph { grid-area: auto; }
-}
-@media (max-width: 768px) {
-  #s-nuit .nuit__text { text-align: center; }
-  #s-nuit h2, #s-nuit .nuit__lead, #s-nuit .nuit__ph p:last-child { margin-left: auto; margin-right: auto; }
-  #s-nuit .nuit__screen { width: min(100%, 330px); }
-  #s-nuit .nuit__time { font-size: 84px; }
-  #s-nuit .nuit__icons { gap: 12px; }
-}
-
-
-
 #s-formules { position: relative; background: var(--stone); overflow-x: clip; }
 #s-formules .fm-anchor { position: absolute; top: 0; left: 0; width: 1px; height: 1px; }
 #s-formules .fm-head { text-align: center; }
@@ -1247,7 +1168,6 @@ html.is-intro-done .devis-fab.is-away { transform: translateY(140%); opacity: 0;
         <ul class="nav__list">
           <li><a class="nav__link" href="#concept"><span class="nav__dot" aria-hidden="true"></span>Le concept</a></li>
           <li><a class="nav__link" href="#canaux"><span class="nav__dot" aria-hidden="true"></span>Les quatre canaux</a></li>
-          <li><a class="nav__link" href="#nuit"><span class="nav__dot" aria-hidden="true"></span>Une nuit</a></li>
           <li><a class="nav__link" href="#formules"><span class="nav__dot" aria-hidden="true"></span>Formules</a></li>
           <li><a class="nav__link" href="#configurateur"><span class="nav__dot" aria-hidden="true"></span>Configurateur</a></li>
           <li><a class="nav__link" href="#realisations"><span class="nav__dot" aria-hidden="true"></span>Avant, après</a></li>
@@ -1412,61 +1332,6 @@ html.is-intro-done .devis-fab.is-away { transform: translateY(140%); opacity: 0;
   </div>
 </section>
 
-
-
-<section id="s-nuit" class="on-dark" aria-labelledby="nuit-title">
-  <span id="nuit" class="nuit-anchor"></span>
-  <div class="nuit__pin">
-    <div class="nuit__layers" aria-hidden="true"><span class="nuit__layer nuit__layer--0"></span><span class="nuit__layer nuit__layer--1"></span><span class="nuit__layer nuit__layer--2"></span></div>
-    <div class="wrap nuit__grid">
-      <div class="nuit__text">
-        <p class="eyebrow">Une nuit, trois phases</p>
-        <h2 id="nuit-title">Vous réglez l’heure du réveil, la pièce s’occupe du reste.</h2>
-        <p class="nuit__lead">Un petit écran pilote la lumière, l’enduit, les senteurs et le son, avec une domotique simple conçue dans notre bureau d’études. L’objectif premier : favoriser le sommeil profond.</p>
-
-        <ol class="nuit__steps" aria-hidden="true"><li class="is-on">Endormissement</li><li>Sommeil</li><li>Réveil</li></ol>
-        <div class="nuit__phases">
-          <article class="nuit__ph is-on">
-            <p class="nuit__range" data-from="-525" data-to="-495"></p>
-            <h3>Endormissement</h3>
-            <p>La lumière baisse et se réchauffe, l’enduit garde un éclat doux. Une senteur apaisante se diffuse, une ambiance sonore accompagne l’endormissement puis s’efface.</p>
-          </article>
-          <article class="nuit__ph">
-            <p class="nuit__range" data-from="-495" data-to="-30"></p>
-            <h3>Sommeil profond</h3>
-            <p>Obscurité et silence. Rien ne se déclenche : la pièce protège le sommeil.</p>
-          </article>
-          <article class="nuit__ph">
-            <p class="nuit__range" data-from="-30" data-to="0"></p>
-            <h3>Réveil</h3>
-            <p>Une lumière d’aube monte peu à peu sur le mur, une senteur plus tonique se diffuse au moment choisi, le son revient doucement.</p>
-          </article>
-        </div>
-        <p class="nuit__note">Exemple de programme : les horaires et les ambiances se règlent avec vous.</p>
-      </div>
-
-      <div class="nuit__device">
-        <div class="nuit__screen">
-          <p class="nuit__now" aria-hidden="true">Endormissement</p>
-          <p class="nuit__time" aria-hidden="true">22:15</p>
-          <ul class="nuit__icons" aria-hidden="true">
-            <li data-k="lumiere"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2.6M12 18.9v2.6M2.5 12h2.6M18.9 12h2.6M5.3 5.3l1.8 1.8M16.9 16.9l1.8 1.8M5.3 18.7l1.8-1.8M16.9 7.1l1.8-1.8"/></svg>Lumière</li>
-            <li data-k="senteur"><svg viewBox="0 0 24 24"><path d="M8 21c-2-2.5-2-5 0-7.5s2-5 0-7.5M13 21c-2-2.5-2-5 0-7.5s2-5 0-7.5M18 21c-2-2.5-2-5 0-7.5s2-5 0-7.5"/></svg>Senteur</li>
-            <li data-k="son"><svg viewBox="0 0 24 24"><path d="M4 9.5h3.5L12 5.5v13l-4.5-4H4z"/><path d="M15.5 9a4.2 4.2 0 0 1 0 6M18.2 6.4a8 8 0 0 1 0 11.2"/></svg>Son</li>
-          </ul>
-          <div class="nuit__set">
-            <span class="nuit__set-label" id="nuit-wake-label">Réveil</span>
-            <button class="nuit__adj" type="button" data-step="-15" aria-label="Réveil 15 minutes plus tôt"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4 10h12"/></svg></button>
-            <output class="nuit__wake" aria-labelledby="nuit-wake-label" aria-live="polite">07:00</output>
-            <button class="nuit__adj" type="button" data-step="15" aria-label="Réveil 15 minutes plus tard"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4 10h12M10 4v12"/></svg></button>
-          </div>
-        </div>
-        <p class="nuit__cap">L’écran de réveil, au mur à côté du lit.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
 <!-- 05-formules -->
 
 <section id="s-formules" class="on-light" aria-labelledby="fm-title">
@@ -1560,7 +1425,7 @@ html.is-intro-done .devis-fab.is-away { transform: translateY(140%); opacity: 0;
           <li><label><input type="checkbox" name="cfg-app" value="lumiere" checked><span class="cfg__box" aria-hidden="true"></span><span class="cfg__txt"><strong>Éclairage bio-adapté</strong><em>Une lumière qui suit l’heure et fait vibrer l’enduit.</em></span></label></li>
           <li><label><input type="checkbox" name="cfg-app" value="senteurs" checked><span class="cfg__box" aria-hidden="true"></span><span class="cfg__txt"><strong>Diffuseur de senteurs</strong><em>Il se déclenche au moment voulu de la nuit.</em></span></label></li>
           <li><label><input type="checkbox" name="cfg-app" value="son" checked><span class="cfg__box" aria-hidden="true"></span><span class="cfg__txt"><strong>Son Sonos</strong><em>Des ambiances pour s’endormir et pour se réveiller.</em></span></label></li>
-          <li><label><input type="checkbox" name="cfg-app" value="ecran" checked><span class="cfg__box" aria-hidden="true"></span><span class="cfg__txt"><strong>Écran de réveil</strong><em>Vous réglez l’heure de réveil : l’éclairage et le son suivent.</em></span></label></li>
+          <li><label><input type="checkbox" name="cfg-app" value="ecran" checked><span class="cfg__box" aria-hidden="true"></span><span class="cfg__txt"><strong>Écran de réveil</strong><em>Vous réglez l’heure de réveil, la domotique conçue dans notre bureau d’études pilote le reste.</em></span></label></li>
         </ul>
       </fieldset>
 
@@ -2975,89 +2840,6 @@ SECTIONS.push({
   },
 });
 
-/* 04b-nuit */
-// ---------- Scroll Animation #25 (Background Shift) : la nuit en trois phases ----------
-// Desktop : la scène est épinglée ; au défilement, la couche « nuit » puis la couche « aube » glissent sur le crépuscule (comme les
-// couches du catalogue), l'horloge de l'écran avance de « réveil - 8 h 45 » à l'heure de réveil, la phase et les icônes suivent.
-// Mobile : pas d'épinglage, chaque phase fait glisser sa couche quand elle arrive. L'heure de réveil réglée ici (ctx.wake) est
-// reprise par l'écran du configurateur 3D (événement cc:wake).
-SECTIONS.push({
-  id: "nuit",
-  init(ctx) {
-    const { gsap, ScrollTrigger } = ctx;
-    const root = document.getElementById("s-nuit");
-    if (!root) return;
-    const $ = s => root.querySelector(s), $$ = s => [...root.querySelectorAll(s)];
-    const layers = $$(".nuit__layer"), phases = $$(".nuit__ph"), steps = $$(".nuit__steps li"), icons = $$(".nuit__icons li");
-    const timeEl = $(".nuit__time"), nowEl = $(".nuit__now"), wakeEl = $(".nuit__wake");
-    const NAMES = ["Endormissement", "Sommeil profond", "Réveil"];
-    const ACTIVE = [["lumiere", "senteur", "son"], [], ["lumiere", "senteur", "son"]];   // ce qui agit dans chaque phase
-    const SPAN = 525;                                   // de « réveil - 8 h 45 » au réveil
-    ctx.wake = 7 * 60;
-    const fmt = m => { m = ((Math.round(m) % 1440) + 1440) % 1440; return `${String(Math.floor(m / 60)).padStart(2, "0")}:${String(m % 60).padStart(2, "0")}`; };
-    // dans le texte, l'heure s'écrit « 22 h 15 », « 7 h » (l'écran garde l'affichage numérique)
-    const prose = m => { m = ((Math.round(m) % 1440) + 1440) % 1440; const mm = m % 60; return `${Math.floor(m / 60)} h${mm ? " " + String(mm).padStart(2, "0") : ""}`; };
-
-    let shown = -1, minute = -SPAN;
-    const setPhase = (i, instant) => {
-      if (i === shown) return;
-      const prev = shown; shown = i;
-      nowEl.textContent = NAMES[i];
-      steps.forEach((s, k) => s.classList.toggle("is-on", k === i));
-      icons.forEach(li => li.classList.toggle("is-on", ACTIVE[i].includes(li.dataset.k)));
-      if (innerWidth >= 1000) {
-        phases.forEach((p, k) => p.classList.toggle("is-on", k === i));
-        if (!instant && !ctx.reduced && prev >= 0) gsap.fromTo(phases[i].children, { y: 24, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: .6, stagger: .06, ease: "power3.out", overwrite: true });
-      }
-    };
-    const setMinute = m => { minute = m; timeEl.textContent = fmt(ctx.wake + m); };
-    // horaires des phases, recalculés à chaque réglage du réveil
-    const ranges = () => $$(".nuit__range").forEach(r => { r.textContent = `de ${prose(ctx.wake + +r.dataset.from)} à ${prose(ctx.wake + +r.dataset.to)}`; });
-    const setWake = m => {
-      ctx.wake = ((m % 1440) + 1440) % 1440;
-      wakeEl.textContent = fmt(ctx.wake);
-      ranges(); setMinute(minute);
-      document.dispatchEvent(new CustomEvent("cc:wake", { detail: ctx.wake }));
-    };
-    $$(".nuit__adj").forEach(b => b.addEventListener("click", () => setWake(ctx.wake + +b.dataset.step)));
-    setWake(ctx.wake); setPhase(0, true); setMinute(-SPAN);
-
-    const mm = gsap.matchMedia();
-    // desktop : 1,6 écran de défilement pour toute la nuit ; les couches glissent par la droite aux changements de phase
-    mm.add("(min-width: 1000px)", () => {
-      gsap.set(layers.slice(1), { xPercent: 101 });
-      const tl = gsap.timeline({
-        scrollTrigger: {
-          trigger: $(".nuit__pin"), pin: true, start: "top top", end: () => "+=" + innerHeight * 1.6, scrub: ctx.reduced ? true : .6,
-          onUpdate: self => {
-            // chaque phase a sa part du défilement ; l'horloge parcourt ses heures à elle (30 min, la nuit, 30 min)
-            const p = self.progress, i = p < .34 ? 0 : p < .78 ? 1 : 2, B = [0, .34, .78, 1], M = [-SPAN, -495, -30, 0];
-            const k = (p - B[i]) / (B[i + 1] - B[i]);
-            setMinute(M[i] + (M[i + 1] - M[i]) * k);
-            setPhase(i);
-          },
-        },
-      });
-      tl.to(layers[1], { xPercent: 0, duration: .14, ease: "power2.inOut" }, .27)
-        .to(layers[2], { xPercent: 0, duration: .14, ease: "power2.inOut" }, .71)
-        .set({}, {}, 1);
-      return () => { phases.forEach(p => { p.classList.remove("is-on"); gsap.set(p.children, { clearProps: "all" }); }); shown = -1; };
-    });
-    // mobile : chaque phase fait glisser sa couche à son arrivée, l'écran affiche l'heure de début de la phase
-    mm.add("(max-width: 999px)", () => {
-      gsap.set(layers.slice(1), { xPercent: 101 });
-      phases.forEach((ph, i) => ScrollTrigger.create({
-        trigger: ph, start: "top 70%", end: "bottom 30%",
-        onToggle: self => {
-          if (!self.isActive) return;
-          setPhase(i); setMinute(+ph.querySelector(".nuit__range").dataset.from);
-          layers.forEach((l, k) => { if (k) gsap.to(l, { xPercent: k <= i ? 0 : 101, duration: ctx.reduced ? 0 : .9, ease: "power3.inOut", overwrite: true }); });
-        },
-      }));
-    });
-  },
-});
-
 /* 05-formules */
 // ---------- Scroll Animation #40 : le lit étoilé se coupe en trois cartes qui se retournent sur les formules ----------
 SECTIONS.push({
@@ -3192,8 +2974,8 @@ SECTIONS.push({
 // Niveaux : garder son lit (sans tête de lit), tête de lit (tour en pin cembro), espace nuit complet (ciel de lit étoilé).
 // Pièce : parquet en cirmolo, mur en litho-peinture (paillettes de cristal et de métal), éclairage bio-adapté (couleur qui
 // tourne lentement, lavis sur le mur), diffuseur de senteurs (bouffées), enceintes Sonos (ondes), écran de réveil (heure).
-// « Voir une nuit en accéléré » : endormissement, sommeil, réveil en 16 s, l'horloge de l'écran suit l'heure de réveil réglée
-// dans la section « nuit ». Le panneau marche sans WebGL (envoi de la configuration).
+// « Voir une nuit en accéléré » : endormissement, sommeil, réveil en 16 s, l'horloge de l'écran va jusqu'au réveil (7 h par
+// défaut, ctx.wake si une autre section le règle). Le panneau marche sans WebGL (envoi de la configuration).
 SECTIONS.push({
   id: "config",
   init(ctx) {
@@ -3228,7 +3010,6 @@ SECTIONS.push({
       c.checked ? st.apps.add(c.value) : st.apps.delete(c.value); sum(); if (room) room.app(c.value, c.checked);
     }));
     $("[data-cfg-send]").addEventListener("click", e => ctx.openDevis(DEVIS[st.lit], e.currentTarget, describe()));
-    document.addEventListener("cc:wake", () => { sum(); if (room) room.screen(); });
     sum();
 
     let room = null;

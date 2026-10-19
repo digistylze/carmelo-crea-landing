@@ -2,8 +2,8 @@
 // Niveaux : garder son lit (sans tête de lit), tête de lit (tour en pin cembro), espace nuit complet (ciel de lit étoilé).
 // Pièce : parquet en cirmolo, mur en litho-peinture (paillettes de cristal et de métal), éclairage bio-adapté (couleur qui
 // tourne lentement, lavis sur le mur), diffuseur de senteurs (bouffées), enceintes Sonos (ondes), écran de réveil (heure).
-// « Voir une nuit en accéléré » : endormissement, sommeil, réveil en 16 s, l'horloge de l'écran suit l'heure de réveil réglée
-// dans la section « nuit ». Le panneau marche sans WebGL (envoi de la configuration).
+// « Voir une nuit en accéléré » : endormissement, sommeil, réveil en 16 s, l'horloge de l'écran va jusqu'au réveil (7 h par
+// défaut, ctx.wake si une autre section le règle). Le panneau marche sans WebGL (envoi de la configuration).
 SECTIONS.push({
   id: "config",
   init(ctx) {
@@ -38,7 +38,6 @@ SECTIONS.push({
       c.checked ? st.apps.add(c.value) : st.apps.delete(c.value); sum(); if (room) room.app(c.value, c.checked);
     }));
     $("[data-cfg-send]").addEventListener("click", e => ctx.openDevis(DEVIS[st.lit], e.currentTarget, describe()));
-    document.addEventListener("cc:wake", () => { sum(); if (room) room.screen(); });
     sum();
 
     let room = null;
