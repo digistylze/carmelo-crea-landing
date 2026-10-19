@@ -1,0 +1,39 @@
+<!-- Hero · 3D Animation #11 (objet 3D en studio, caméra qui passe d'une vue à l'autre) + compteur à rouleaux (Hero #8).
+     Le lit L'Éveil des sens (structure en pin cembro, tête de lit capitonnée, plafond étoilé) est modélisé en three.js.
+     Préchargement : il fait un tour complet pendant que le compteur va de 0 à 100 et que la lumière passe par les quatre
+     canaux ; à la fin du tour la caméra le recadre à droite et le texte du hero se pose. QA : ?pre=<secondes> fige le tour. -->
+<section id="s-hero" class="is-pre" aria-labelledby="hero-title">
+  <span id="top" class="hero__anchor"></span>
+
+  <div class="hero__stage" aria-hidden="true">
+    <canvas class="hero__canvas"></canvas>
+    <img class="hero__fallback" data-img="hero" alt="" width="1920" height="1080">
+  </div>
+
+  <div class="hero__loader" data-intro-loader aria-hidden="true">
+    <img class="hero__loader-logo" data-img="logo-blanc" alt="" width="236" height="60">
+    <p class="hero__loader-name">L'Éveil des sens<span class="hero__canal"><span>Chromothérapie</span></span></p>
+    <p class="hero__count"><span class="hero__digits"></span><span class="hero__pct">%</span></p>
+    <span class="hero__bar"><i></i></span>
+    <button class="hero__skip" type="button" tabindex="-1">Passer</button>
+  </div>
+
+  <div class="hero__copy">
+    <p class="eyebrow hero__eyebrow">Rénovation d'espace nuit · Genève</p>
+    <h1 id="hero-title" class="hero__title"><span class="hero__line">Votre chambre,</span> <span class="hero__line">repensée pour</span> <span class="hero__line">mieux dormir.</span></h1>
+    <p class="hero__lead">L'Éveil des sens réunit une structure en pin cembro et quatre thérapies naturelles. Carmelo Crea les dessine et les pose sur mesure, autour de votre lit actuel ou en literie complète.</p>
+    <div class="hero__actions">
+      <button class="btn" type="button" data-devis data-hero-cta>Demander une étude</button>
+      <a class="hero__tel" href="tel:+41227383736"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25c1.1.37 2.3.57 3.6.57a1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1z"/></svg>022 738 37 36</a>
+    </div>
+    <ul class="hero__proof">
+      <li><svg class="hero__star" viewBox="0 0 20 20" aria-hidden="true"><path d="M10 1.4l2.6 5.5 6 .7-4.4 4.2 1.1 5.9L10 14.8l-5.3 2.9 1.1-5.9-4.4-4.2 6-.7z"/></svg><span><strong>4,5</strong> sur Google, 16 avis</span></li>
+      <li>CREA Immobilier, depuis 1997</li>
+      <li>Genève et environs</li>
+    </ul>
+  </div>
+
+  <!-- glisser pour tourner : double flèche au-dessus d'un plateau tournant, posée sous le lit -->
+  <p class="hero__hint" aria-hidden="true"><svg viewBox="0 0 64 30" fill="none" stroke="currentColor" stroke-width="1.5"><g class="hh-arrow"><path d="M11 10h42"/><path d="M17 4l-6 6 6 6"/><path d="M47 4l6 6-6 6"/></g><path class="hh-arc" d="M12 22c10 5.5 30 5.5 40 0"/></svg></p>
+  <p class="hero__note"><span class="hero__note-canal">Chromothérapie</span> · visualisation 3D du concept</p>
+</section>

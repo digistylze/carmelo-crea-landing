@@ -1,0 +1,113 @@
+/* Hero : préchargement 3D (le lit fait un tour) puis le hero se pose autour de lui. Plein écran : l'effet l'exige. */
+#s-hero {
+  position: relative;
+  height: 100vh; height: 100svh;
+  min-height: 600px;
+  overflow: hidden;
+  /* studio de nuit : un halo à peine plus clair là où se tient le lit */
+  background: radial-gradient(60% 70% at var(--bx, 50%) 58%, #1B1F28 0%, #12151B 45%, var(--night) 100%);
+  color: var(--mist);
+}
+#s-hero .hero__anchor { position: absolute; top: 0; left: 0; width: 1px; height: 1px; }
+#s-hero .hero__stage { position: absolute; inset: 0; }
+#s-hero .hero__canvas { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; opacity: 0; }
+/* sans WebGL : le rendu du site, composé à droite */
+#s-hero .hero__fallback { display: none; position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 100% 50%; }
+#s-hero.no-gl .hero__fallback { display: block; }
+#s-hero.no-gl .hero__canvas { display: none; }
+
+/* --- préchargement --- */
+#s-hero .hero__loader { position: absolute; inset: 0; z-index: 3; pointer-events: none; }
+#s-hero .hero__loader-logo { position: absolute; top: clamp(22px, 4vh, 40px); left: var(--gutter); width: clamp(140px, 12vw, 190px); height: auto; }
+#s-hero .hero__loader-name {
+  position: absolute; left: var(--gutter); bottom: clamp(34px, 7vh, 64px);
+  font-family: var(--f-display); font-weight: 500; font-size: clamp(28px, 2.6vw, 40px); line-height: 1; color: var(--pearl);
+}
+/* nom du canal dont la lumière éclaire le lit à cet instant */
+#s-hero .hero__canal { display: block; height: 1.4em; margin-top: 12px; overflow: hidden; font-family: var(--f-body); font-weight: 600; font-size: 12.5px; letter-spacing: .22em; text-transform: uppercase; color: var(--cembro); }
+#s-hero .hero__canal > span { display: block; line-height: 1.4em; }
+#s-hero .hero__count {
+  position: absolute; right: var(--gutter); bottom: clamp(26px, 6vh, 56px); display: flex; align-items: flex-start;
+  font-family: var(--f-display); font-weight: 500; font-size: clamp(76px, 10vw, 168px); line-height: 1; color: var(--pearl);
+  font-variant-numeric: lining-nums tabular-nums;
+}
+#s-hero .hero__pct { margin-left: .06em; font-size: .32em; line-height: 1.2; color: var(--cembro); }
+/* compteur à rouleaux (Hero #8) : une colonne 0-9 par chiffre */
+#s-hero .hero__digits { display: flex; }
+#s-hero .hero__col { display: block; height: 1em; overflow: hidden; }
+#s-hero .hero__col > span { display: flex; flex-direction: column; transition: transform .45s cubic-bezier(.3, .9, .3, 1); }
+#s-hero .hero__col > span > span { display: block; height: 1em; width: .56em; text-align: center; }
+#s-hero .hero__col.is-hidden { width: 0; }
+#s-hero .hero__bar { position: absolute; left: var(--gutter); right: var(--gutter); bottom: clamp(16px, 3vh, 28px); height: 1px; background: var(--line-light); }
+#s-hero .hero__bar i { position: absolute; inset: 0; background: var(--cembro); transform-origin: 0 50%; transform: scaleX(0); }
+#s-hero .hero__skip {
+  position: absolute; top: clamp(22px, 4vh, 40px); right: var(--gutter); pointer-events: auto;
+  min-height: 44px; padding: 0 4px; border: 0; background: none; cursor: pointer;
+  font-size: 12.5px; font-weight: 600; letter-spacing: .18em; text-transform: uppercase; color: var(--mist);
+  text-decoration: underline; text-underline-offset: .3em; text-decoration-thickness: 1px;
+}
+#s-hero .hero__skip:hover { color: var(--pearl); }
+
+/* --- contenu du hero (à gauche ; le lit est cadré à droite par la caméra) --- */
+#s-hero .hero__copy {
+  position: relative; z-index: 2; height: 100%;
+  display: flex; flex-direction: column; justify-content: center;
+  max-width: calc(min(560px, 44%) + 2 * var(--gutter)); padding: 96px var(--gutter) 64px;
+}
+#s-hero.is-pre .hero__copy, #s-hero.is-pre .hero__note { visibility: hidden; }
+/* le bloc texte couvre toute la hauteur : il laisse passer les gestes vers le lit, seuls ses éléments restent cliquables */
+#s-hero .hero__copy { pointer-events: none; }
+#s-hero .hero__copy > * { pointer-events: auto; }
+#s-hero .hero__eyebrow { margin-bottom: 22px; }
+#s-hero .hero__title { font-size: clamp(50px, 5.4vw, 90px); line-height: .98; letter-spacing: -.02em; }
+#s-hero .hero__line { display: block; white-space: nowrap; }
+/* masques de SplitText : un peu d'air pour les accents (é) et le jambage du p */
+#s-hero .hero__line > div { padding: .1em 0 .06em; margin: -.1em 0 -.06em; }
+#s-hero .hero__lead { margin-top: 26px; max-width: 34em; font-size: clamp(16px, .45vw + 12px, 18px); line-height: 1.6; }
+#s-hero .hero__actions { display: flex; flex-wrap: wrap; align-items: center; gap: 14px 28px; margin-top: 34px; }
+#s-hero .hero__tel { display: inline-flex; align-items: center; gap: 10px; min-height: 48px; color: var(--pearl); font-weight: 600; letter-spacing: .04em; text-decoration: none; white-space: nowrap; }
+#s-hero .hero__tel svg { width: 16px; height: 16px; color: var(--cembro); }
+#s-hero .hero__tel:hover { text-decoration: underline; text-underline-offset: .25em; }
+#s-hero .hero__proof { list-style: none; margin: 40px 0 0; padding: 18px 0 0; display: flex; flex-wrap: wrap; gap: 8px 26px; border-top: 1px solid var(--line-light); font-size: 14px; letter-spacing: .02em; }
+#s-hero .hero__proof li { display: inline-flex; align-items: center; gap: 8px; }
+#s-hero .hero__proof strong { color: var(--pearl); font-weight: 700; }
+#s-hero .hero__star { width: 15px; height: 15px; fill: var(--cembro); }
+#s-hero .hero__note { position: absolute; z-index: 2; right: var(--gutter); top: 96px; font-size: 12px; letter-spacing: .14em; text-transform: uppercase; color: rgba(243, 238, 230, .5); }
+#s-hero .hero__note-canal { color: var(--cembro); }
+/* lit manipulable une fois le hero posé : glisser pour tourner (le geste vertical reste au défilement sur tactile) */
+#s-hero.is-interactive .hero__canvas { pointer-events: auto; touch-action: pan-y; }
+#s-hero.is-grabbing .hero__canvas { cursor: grabbing !important; }
+#s-hero .hero__hint { position: absolute; z-index: 2; left: 0; top: 0; margin: 0; visibility: hidden; pointer-events: none; color: var(--pearl); }
+#s-hero .hero__hint svg { display: block; width: 64px; height: 30px; overflow: visible; filter: drop-shadow(0 2px 6px rgba(0, 0, 0, .7)); }
+#s-hero .hero__hint .hh-arc { stroke: var(--cembro); opacity: .85; }
+/* la double flèche glisse d'un côté à l'autre : « attrapez et tournez » */
+#s-hero .hero__hint .hh-arrow { animation: hh-swing 2.6s var(--ease-soft) infinite; }
+@keyframes hh-swing { 0%, 100% { transform: translateX(-5px); } 50% { transform: translateX(5px); } }
+
+/* écrans bas (portable 1366×625…) : on resserre */
+@media (min-width: 901px) and (max-height: 760px) {
+  #s-hero .hero__copy { padding-top: 84px; padding-bottom: 40px; }
+  #s-hero .hero__title { font-size: clamp(44px, min(5vw, 9vh), 80px); }
+  #s-hero .hero__lead { margin-top: 18px; }
+  #s-hero .hero__actions { margin-top: 24px; }
+  #s-hero .hero__proof { margin-top: 26px; }
+}
+
+/* tablette / mobile : texte en haut, lit dans le bas de l'écran */
+@media (max-width: 900px) {
+  #s-hero { background: radial-gradient(90% 50% at 50% 74%, #1B1F28 0%, #12151B 50%, var(--night) 100%); }
+  #s-hero .hero__copy { max-width: none; justify-content: flex-start; padding: 84px var(--gutter) 24px; }
+  #s-hero .hero__eyebrow { margin-bottom: 14px; font-size: 12px; letter-spacing: .18em; }
+  #s-hero .hero__title { font-size: clamp(38px, 11vw, 56px); }
+  #s-hero .hero__lead { margin-top: 14px; font-size: 15.5px; line-height: 1.5; }
+  #s-hero .hero__actions { margin-top: 18px; gap: 4px 20px; }
+  #s-hero .hero__proof { position: absolute; left: var(--gutter); right: var(--gutter); bottom: 16px; margin: 0; padding: 0; border: 0; font-size: 13px; gap: 4px 16px; }
+  #s-hero .hero__proof li:nth-child(3) { display: none; }
+  #s-hero .hero__note { display: none; }
+  #s-hero .hero__hint svg { width: 54px; height: 26px; }
+  #s-hero .hero__count { font-size: clamp(64px, 20vw, 110px); bottom: 64px; }
+  #s-hero .hero__loader-name { bottom: auto; top: 92px; font-size: 26px; }
+}
+@media (max-width: 900px) and (max-height: 720px) {
+  #s-hero .hero__lead { display: none; }
+}

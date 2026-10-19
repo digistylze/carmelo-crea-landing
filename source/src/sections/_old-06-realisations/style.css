@@ -1,0 +1,73 @@
+/* Réalisations · porté de Grid Animations #4 (grid-to-preview) : vignettes à gauche, grand aperçu 3/2 à droite qui passe à
+   l'image suivante par une découpe en 4 tuiles (croix couleur du fond qui s'ouvre puis se referme) */
+#s-realisations {
+  --pw: min(56vw, 720px, calc((100svh - 230px) * 1.5));   /* aperçu 3/2 : tient dans l'écran sous la barre */
+  --g: 14px;                                                 /* largeur des joints entre les tuiles */
+  position: relative;
+  background: var(--night-2);
+  padding: clamp(72px, 10vh, 112px) 0;
+  overflow-x: clip;
+}
+#s-realisations .rz-anchor { position: absolute; top: 0; left: 0; width: 1px; height: 1px; }
+
+#s-realisations .rz-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) var(--pw);
+  grid-template-rows: auto 1fr auto;
+  grid-template-areas: "text prev" "thumbs prev" ". cap";
+  column-gap: clamp(40px, 5vw, 88px);
+}
+
+/* texte */
+#s-realisations .rz-text { grid-area: text; }
+#s-realisations .rz-text .eyebrow { margin-bottom: 18px; }
+#s-realisations .rz-text h2 { font-size: clamp(40px, 4.2vw, 68px); max-width: 9em; }
+#s-realisations .rz-text p:last-child { margin-top: 18px; max-width: 40ch; font-size: clamp(16px, 1.05vw, 18px); }
+
+/* vignettes : la bande sous l'image marque la réalisation affichée (et avance pendant la lecture automatique) */
+#s-realisations .rz-thumbs {
+  grid-area: thumbs; align-self: end;
+  display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px 14px;
+  max-width: 420px; margin-top: 32px;
+}
+#s-realisations .rz-thumb { appearance: none; display: block; min-width: 0; margin: 0; padding: 0; border: 0; background: none; cursor: pointer; text-align: left; }
+#s-realisations .rz-thumb__img { position: relative; display: block; aspect-ratio: 4 / 3; overflow: hidden; border-radius: 10px; background: var(--night); }
+#s-realisations .rz-thumb__img img { width: 100%; height: 100%; object-fit: cover; opacity: .45; transition: opacity .35s var(--ease); }
+#s-realisations .rz-thumb:hover img { opacity: .8; }
+#s-realisations .rz-thumb[aria-pressed="true"] img { opacity: 1; }
+#s-realisations .rz-band { position: absolute; left: 0; right: 0; bottom: 0; height: 4px; background: rgba(14, 16, 20, .55); opacity: 0; transition: opacity .3s var(--ease); }
+#s-realisations .rz-band i { display: block; height: 100%; background: var(--cembro); transform-origin: 0 50%; transform: scaleX(0); }
+#s-realisations .rz-thumb[aria-pressed="true"] .rz-band { opacity: 1; }
+#s-realisations .rz-thumb__lbl { display: block; margin-top: 8px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 11.5px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: var(--mist); }
+#s-realisations .rz-thumb[aria-pressed="true"] .rz-thumb__lbl { color: var(--cembro); }
+
+/* aperçu : images empilées, deux joints couleur du fond forment la croix du catalogue */
+#s-realisations .rz-prev {
+  grid-area: prev; align-self: end;
+  position: relative; width: var(--pw); aspect-ratio: 3 / 2;
+  overflow: hidden; border-radius: 22px; background: var(--night);
+}
+#s-realisations .rz-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; visibility: hidden; opacity: 0; }
+#s-realisations .rz-img.is-on { visibility: visible; opacity: 1; }
+#s-realisations .rz-cut { position: absolute; z-index: 3; background: var(--night-2); pointer-events: none; }
+#s-realisations .rz-cut--v { top: -1px; bottom: -1px; left: calc(50% - var(--g) / 2); width: var(--g); transform: scaleX(0); }
+#s-realisations .rz-cut--h { left: -1px; right: -1px; top: calc(50% - var(--g) / 2); height: var(--g); transform: scaleY(0); }
+
+#s-realisations .rz-cap {
+  grid-area: cap; width: var(--pw); margin-top: 14px;
+  display: flex; justify-content: space-between; align-items: baseline; gap: 16px;
+  font-size: 15px; line-height: 1.4; color: var(--pearl);
+}
+#s-realisations .rz-cap__n { flex: none; font-size: 12px; font-weight: 600; letter-spacing: .16em; color: var(--mist); }
+
+/* mobile : titre, texte, aperçu, vignettes, légende */
+@media (max-width: 860px) {
+  #s-realisations { --pw: calc(100vw - 2 * var(--gutter)); --g: 10px; padding: 68px 0 60px; }
+  #s-realisations .rz-grid { grid-template-columns: minmax(0, 1fr); grid-template-rows: none; grid-template-areas: "text" "prev" "cap" "thumbs"; }
+  #s-realisations .rz-text h2 { font-size: clamp(36px, 10vw, 48px); }
+  #s-realisations .rz-text p:last-child { margin-top: 14px; font-size: 16px; }
+  #s-realisations .rz-prev { margin-top: 28px; border-radius: 16px; }
+  #s-realisations .rz-cap { min-height: 2.8em; }
+  #s-realisations .rz-thumbs { max-width: none; margin-top: 18px; gap: 14px 10px; }
+  #s-realisations .rz-thumb__lbl { font-size: 11px; letter-spacing: .1em; }
+}

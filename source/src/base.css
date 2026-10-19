@@ -1,0 +1,103 @@
+/* Socle commun : jetons de la DA, reset, typo, boutons, barre mobile. Chaque section a son CSS scopé (#s-<nom>). */
+:root {
+  /* DA « nuit » : le site est neutre (blanc, gris, logo noir) ; ses visuels d'espace nuit sont des chambres sombres,
+     plafond étoilé, bois clair. Neutres bleutés + un seul accent : le bois de pin cembro. */
+  --night: #0E1014;        /* fond sombre principal (jamais de noir pur) */
+  --night-2: #15181E;
+  --night-3: #1D2129;
+  --stone: #ECE8E2;        /* fond clair : le blanc cassé chaud des pages du site */
+  --stone-2: #E1DBD3;      /* lavis */
+  --ink: #121418;          /* titres sur clair */
+  --ink-soft: #474B54;     /* texte courant sur clair (AA sur --stone) */
+  --pearl: #F3EEE6;        /* titres et boutons sur sombre */
+  --mist: #AEB2BB;         /* texte courant sur sombre */
+  --cembro: #D4A46C;       /* bois de pin cembro : détails et texte sur fond sombre seulement */
+  --cembro-deep: #84501F;  /* le même pour fond clair (filets, numéros, sur-titres ; AA sur --stone) */
+  --line: rgba(18, 20, 24, .14);
+  --line-light: rgba(243, 238, 230, .16);
+  --f-display: "Cormorant Garamond", "Cormorant", Garamond, Georgia, serif;
+  --f-body: "Manrope", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --gutter: clamp(20px, 5vw, 72px);
+  --maxw: 1280px;
+  --bar-h: 0px;            /* hauteur de la barre mobile (posée par core.js) */
+  --ease: cubic-bezier(.22, 1, .36, 1);
+  --ease-soft: cubic-bezier(.65, 0, .35, 1);
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+/* sommeil haut de gamme : tous les coins sont vifs, partout (y compris les arrondis posés en JS par les effets du catalogue) */
+*, *::before, *::after { border-radius: 0 !important; }
+html { -webkit-text-size-adjust: 100%; background: var(--night); }
+html.lenis, html.lenis body { height: auto; }
+.lenis.lenis-smooth { scroll-behavior: auto !important; }
+/* pas d'overflow: hidden quand Lenis est arrêté : la page se décalerait (Windows). core.js bloque les touches. */
+body {
+  margin: 0;
+  width: 100%;
+  overflow-x: clip;
+  background: var(--night);
+  color: var(--mist);
+  font-family: var(--f-body);
+  font-weight: 400;
+  font-size: clamp(16px, .5vw + 12px, 18px);
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  padding-bottom: var(--bar-h);
+}
+img, svg, canvas, video { display: block; max-width: 100%; }
+img { height: auto; }
+a { color: inherit; }
+button { font: inherit; color: inherit; }
+h1, h2, h3, h4 { margin: 0; font-family: var(--f-display); font-weight: 500; line-height: 1.02; letter-spacing: -.012em; color: var(--pearl); text-wrap: balance; }
+p { margin: 0; }
+::selection { background: var(--cembro); color: var(--night); }
+
+.wrap { width: 100%; max-width: var(--maxw); margin: 0 auto; padding: 0 var(--gutter); }
+/* sur-titre : petites capitales espacées */
+.eyebrow { font-family: var(--f-body); font-weight: 600; font-size: 12.5px; letter-spacing: .22em; text-transform: uppercase; color: var(--cembro); }
+.on-light { color: var(--ink-soft); }
+.on-light h1, .on-light h2, .on-light h3, .on-light h4 { color: var(--ink); }
+.on-light .eyebrow, .eyebrow--deep { color: var(--cembro-deep); }
+
+/* une seule forme d'appel à l'action : le bloc à coins vifs ; perle sur sombre, encre sur clair */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: .7em;
+  min-height: 52px; padding: .9em 1.75em;
+  border: 0; border-radius: 999px; cursor: pointer; text-decoration: none;
+  background: var(--pearl); color: var(--night);
+  font-family: var(--f-body); font-weight: 600; font-size: 13.5px; letter-spacing: .16em; text-transform: uppercase; line-height: 1;
+  transition: background .4s var(--ease), color .4s var(--ease), box-shadow .4s var(--ease);
+}
+.btn:hover { background: var(--cembro); }
+.on-light .btn, .btn--ink { background: var(--ink); color: var(--pearl); }
+.on-light .btn:hover, .btn--ink:hover { background: var(--cembro-deep); }
+.btn--ghost { background: transparent; color: var(--pearl); box-shadow: inset 0 0 0 1px rgba(243, 238, 230, .45); }
+.btn--ghost:hover { background: var(--pearl); color: var(--night); }
+.on-light .btn--ghost { background: transparent; color: var(--ink); box-shadow: inset 0 0 0 1px var(--ink); }
+.on-light .btn--ghost:hover { background: var(--ink); color: var(--pearl); }
+.btn:focus-visible, a:focus-visible, button:focus-visible { outline: 2px solid var(--cembro); outline-offset: 3px; }
+.on-light .btn:focus-visible, .on-light a:focus-visible, .on-light button:focus-visible { outline-color: var(--cembro-deep); }
+.btn svg { width: 16px; height: 16px; flex: none; }
+.link { color: inherit; text-decoration: underline; text-underline-offset: .22em; text-decoration-thickness: 1px; }
+.sr-only { position: absolute !important; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+.sr-only:focus { position: fixed !important; top: 8px; left: 8px; width: auto; height: auto; clip: auto; z-index: 999; background: var(--pearl); color: var(--night); padding: 8px 14px; }
+
+/* barre mobile : étude + appel, visible quand le bouton du hero est sorti de l'écran */
+.mbar {
+  position: fixed; left: 0; right: 0; bottom: 0; z-index: 60;
+  display: none; align-items: center; gap: 10px;
+  padding: 10px 14px calc(10px + env(safe-area-inset-bottom));
+  background: rgba(14, 16, 20, .94); backdrop-filter: blur(10px);
+  border-top: 1px solid var(--line-light);
+  transform: translateY(110%); transition: transform .45s var(--ease);
+}
+.mbar.is-on { transform: none; }
+.mbar .btn { flex: 1; min-height: 48px; }
+.mbar__call { flex: none; width: 48px; height: 48px; display: grid; place-items: center; border-radius: 50%; color: var(--pearl); box-shadow: inset 0 0 0 1px rgba(243, 238, 230, .4); }
+.mbar__call svg { width: 19px; height: 19px; }
+@media (max-width: 768px) { .mbar { display: flex; } }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+}
