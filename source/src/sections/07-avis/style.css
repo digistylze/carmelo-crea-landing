@@ -55,12 +55,13 @@
 
 /* mobile : titre, rond photo pleine largeur, citation, navigation */
 @media (max-width: 768px) {
-  #s-avis .avis__col { width: 100%; max-width: none; }
+  #s-avis .avis__col { width: 100%; max-width: none; text-align: center; }
   #s-avis .avis__media { position: relative; top: auto; bottom: auto; right: auto; width: auto; height: clamp(250px, 74vw, 340px); margin: 32px calc(-1 * var(--gutter)) 0; }
   #s-avis .avis__shape:first-child { clip-path: inset(3% 12% 3% 12%); }
   #s-avis .avis__quotes { margin-top: 30px; }
   #s-avis .avis__text { max-width: none; }
   #s-avis .avis__who { font-size: 15px; letter-spacing: .14em; }
-  #s-avis .avis__nav { margin-top: 30px; }
-  #s-avis .avis__count { margin-left: auto; }
+  #s-avis .avis__cap { justify-content: center; }
+  #s-avis .avis__nav { justify-content: center; margin-top: 30px; }
+  #s-avis .avis__google { align-self: center; }
 }

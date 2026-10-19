@@ -55,16 +55,40 @@
 #s-avantapres .ap-nxt__img { overflow: hidden; clip-path: polygon(50% 50%, 50% 50%, 50% 50%, 50% 50%); box-shadow: 0 24px 60px rgba(0, 0, 0, .35); }
 #s-avantapres .ap-count { position: absolute; right: 0; bottom: -30px; font-size: 12px; font-weight: 600; letter-spacing: .16em; color: var(--mist); }
 
+/* comparateur et sélecteur de chantier : mobile seulement */
+#s-avantapres .ap-cmp, #s-avantapres .ap-tabs { display: none; }
+
 @media (max-width: 860px) {
   #s-avantapres { --fh: auto; padding: 64px 0 72px; }
-  #s-avantapres .ap-grid { grid-template-columns: minmax(0, 1fr); }
-  #s-avantapres h2 { font-size: clamp(36px, 10vw, 48px); }
-  #s-avantapres .ap-stage { order: 2; width: 100%; max-width: 520px; height: auto; margin-top: 28px; justify-self: center; }
+  #s-avantapres .ap-grid { grid-template-columns: minmax(0, 1fr); text-align: center; }
+  #s-avantapres h2 { font-size: clamp(36px, 10vw, 48px); margin: 0 auto; }
   #s-avantapres .ap-text { display: contents; }
   #s-avantapres .ap-text > :nth-child(-n+3) { order: 1; }
-  #s-avantapres .ap-word { order: 3; margin-top: 18px; font-size: clamp(56px, 19vw, 92px); }
-  #s-avantapres .ap-lead { margin-bottom: 0; }
-  #s-avantapres .ap-proj { order: 4; margin-top: 14px; min-height: 0; }
-  #s-avantapres .ap-ctrl { order: 5; flex-wrap: wrap; gap: 8px 16px; }
-  #s-avantapres .ap-count { bottom: auto; top: 12px; right: 12px; padding: 6px 10px; background: rgba(14, 16, 20, .6); color: var(--pearl); }
+  #s-avantapres .ap-lead { margin: 16px auto 0; }
+  #s-avantapres .ap-word, #s-avantapres .ap-ctrl, #s-avantapres .ap-slider, #s-avantapres .ap-count { display: none; }
+  #s-avantapres .ap-tabs { order: 2; display: flex; justify-content: center; margin-top: 26px; }
+  #s-avantapres .ap-tabs button {
+    min-height: 44px; padding: 0 16px; border: 0; background: transparent; color: var(--mist); box-shadow: inset 0 0 0 1px var(--line-light);
+    font-family: var(--f-body); font-weight: 600; font-size: 12px; letter-spacing: .14em; text-transform: uppercase; white-space: nowrap; cursor: pointer;
+    transition: background .35s var(--ease), color .35s var(--ease);
+  }
+  #s-avantapres .ap-tabs button + button { margin-left: -1px; }
+  #s-avantapres .ap-tabs button[aria-pressed="true"] { background: var(--pearl); color: var(--night); box-shadow: none; }
+  #s-avantapres .ap-stage { order: 3; width: 100%; max-width: 520px; height: auto; margin-top: 16px; justify-self: center; }
+  #s-avantapres .ap-cmp {
+    --x: 50%; display: block; position: absolute; inset: 0; overflow: hidden; background: var(--night);
+    touch-action: pan-y; user-select: none; -webkit-user-select: none; cursor: ew-resize;
+  }
+  #s-avantapres .ap-cmp img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; pointer-events: none; -webkit-user-drag: none; }
+  #s-avantapres .ap-cmp__a { position: absolute; inset: 0; clip-path: inset(0 calc(100% - var(--x)) 0 0); }
+  #s-avantapres .ap-cmp__bar { position: absolute; top: 0; bottom: 0; left: var(--x); width: 2px; margin-left: -1px; background: var(--pearl); pointer-events: none; }
+  #s-avantapres .ap-cmp__knob { position: absolute; top: 50%; left: 50%; display: grid; place-items: center; width: 48px; height: 48px; transform: translate(-50%, -50%); background: var(--pearl); color: var(--night); box-shadow: 0 6px 22px rgba(0, 0, 0, .35); }
+  #s-avantapres .ap-cmp__knob svg { width: 26px; height: 14px; }
+  #s-avantapres .ap-cmp__tag { position: absolute; top: 12px; padding: 7px 10px; background: rgba(14, 16, 20, .62); color: var(--pearl); font-size: 12px; font-weight: 600; letter-spacing: .18em; text-transform: uppercase; pointer-events: none; }
+  #s-avantapres .ap-cmp__tag--a { left: 12px; }
+  #s-avantapres .ap-cmp__tag--b { right: 12px; }
+  #s-avantapres .ap-cmp__range { position: absolute; left: 0; bottom: 0; width: 100%; height: 1px; margin: 0; opacity: 0; pointer-events: none; }
+  #s-avantapres .ap-cmp:has(.ap-cmp__range:focus-visible) { outline: 2px solid var(--cembro); outline-offset: 3px; }
+  #s-avantapres .ap-proj { order: 4; margin-top: 18px; padding-top: 0; border-top: 0; min-height: 0; }
+  #s-avantapres .ap-proj__detail { margin: 6px auto 0; }
 }

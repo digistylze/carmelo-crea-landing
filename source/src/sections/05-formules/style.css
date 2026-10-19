@@ -71,19 +71,33 @@
 #s-formules .fm-stat__n { display: block; font-family: var(--f-display); font-weight: 500; font-size: clamp(56px, 6.6vw, 108px); line-height: .9; color: var(--ink); font-variant-numeric: lining-nums tabular-nums; }
 #s-formules .fm-stat__l { display: block; margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--line); font-size: 15px; line-height: 1.4; color: var(--ink-soft); }
 
-/* mobile et tablette : cartes en colonne, la photo coupée en trois bandes horizontales, chaque carte se retourne au passage */
+/* tirets du slider mobile */
+#s-formules .fm-dots { display: none; }
+#s-formules .fm-dots button { position: relative; width: 44px; height: 44px; padding: 0; border: 0; background: none; cursor: pointer; }
+#s-formules .fm-dots button::before { content: ""; position: absolute; left: 8px; right: 8px; top: 21px; height: 2px; background: var(--line); transition: background .4s var(--ease); }
+#s-formules .fm-dots button[aria-current]::before { background: var(--ink); }
+
+/* mobile et tablette : les trois formules en slider (défilement horizontal natif, aimanté), elles se retournent à l'arrivée */
 @media (max-width: 999px) {
-  #s-formules .fm-stage { height: auto; min-height: 0; gap: 32px; padding: clamp(64px, 12vw, 96px) var(--gutter) 8px; }
-  #s-formules .fm-cards { width: 100%; max-width: 480px; display: grid; grid-auto-rows: 1fr; gap: 12px; perspective: 1200px; }
-  #s-formules .fm-card { aspect-ratio: auto; min-height: 260px; }
-  #s-formules .fm-card:nth-child(n) { border-radius: var(--r); }
-  #s-formules .fm-card__front {
-    --px: 12%;
-    background-size: auto 300%;
-    background-position: var(--px) calc(var(--k) * 50%);
+  #s-formules .fm-stage { height: auto; min-height: 0; gap: 28px; padding: clamp(64px, 12vw, 96px) 0 0; }
+  #s-formules .fm-head { padding: 0 var(--gutter); }
+  #s-formules .fm-cards {
+    width: 100%; gap: 12px; perspective: 1200px;
+    overflow-x: auto; overscroll-behavior-x: contain; scroll-snap-type: x mandatory; scroll-padding-inline: var(--gutter);
+    padding: 4px var(--gutter) 34px; scrollbar-width: none;
   }
+  #s-formules .fm-cards::-webkit-scrollbar { display: none; }
+  #s-formules .fm-card { flex: 0 0 min(84%, 420px); aspect-ratio: auto; min-height: 330px; scroll-snap-align: start; }
+  #s-formules .fm-card__front { background-size: cover; background-position: calc(var(--k) * 50%) 60%; }
+  #s-formules .fm-card__back { align-items: center; padding: 30px 24px; text-align: center; }
+  #s-formules .fm-card__btn { align-self: center; }
+  #s-formules .fm-dots { display: flex; justify-content: center; margin-top: -30px; }
   #s-formules .fm-band { grid-template-columns: minmax(0, 1fr); gap: 32px; }
   #s-formules .fm-stats { gap: 12px; }
   #s-formules .fm-stat__n { font-size: clamp(44px, 13vw, 72px); }
   #s-formules .fm-stat__l { font-size: 15px; }
+}
+@media (max-width: 768px) {
+  #s-formules .fm-band { text-align: center; }
+  #s-formules .fm-story { margin: 0 auto; }
 }

@@ -92,13 +92,23 @@ SECTIONS.push({
       };
     });
 
-    // mobile / tablette : cartes en colonne, chacune se retourne quand elle passe aux deux tiers de l'écran
+    // mobile / tablette : slider horizontal (défilement natif aimanté) ; les cartes se retournent en cascade à l'arrivée,
+    // les tirets suivent la carte affichée et y mènent
     mm.add("(max-width: 999px)", () => {
-      if (ctx.reduced) { gsap.set(cards, { rotationY: 180 }); return; }
-      cards.forEach(c => gsap.to(c, {
-        rotationY: 180, duration: 0.9, ease: "power3.inOut",
-        scrollTrigger: { trigger: c, start: "center 62%", toggleActions: "play none none reverse" },
-      }));
+      const dots = gsap.utils.toArray(".fm-dots button", sec), ac = new AbortController();
+      const step = () => cards[1].offsetLeft - cards[0].offsetLeft;
+      const mark = () => {
+        const i = Math.min(cards.length - 1, Math.round(cont.scrollLeft / step()));
+        dots.forEach((d, k) => (k === i ? d.setAttribute("aria-current", "true") : d.removeAttribute("aria-current")));
+      };
+      cont.addEventListener("scroll", mark, { passive: true, signal: ac.signal });
+      dots.forEach((d, i) => d.addEventListener("click", () => cont.scrollTo({ left: i * step(), behavior: ctx.reduced ? "auto" : "smooth" }), { signal: ac.signal }));
+      if (ctx.reduced) gsap.set(cards, { rotationY: 180 });
+      else gsap.to(cards, {
+        rotationY: 180, duration: 0.9, ease: "power3.inOut", stagger: 0.12,
+        scrollTrigger: { trigger: cont, start: "top 70%", toggleActions: "play none none reverse" },
+      });
+      return () => { ac.abort(); cont.scrollLeft = 0; };
     });
 
     // compteurs : créés après l'épinglage pour que leurs positions tiennent compte de l'espace qu'il ajoute

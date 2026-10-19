@@ -325,14 +325,15 @@ p { margin: 0; }
 
 @media (max-width: 900px) {
   #s-hero { background: radial-gradient(90% 50% at 50% 74%, #1B1F28 0%, #12151B 50%, var(--night) 100%); }
-  #s-hero .hero__copy { max-width: none; justify-content: flex-start; padding: 84px var(--gutter) 24px; }
+  #s-hero .hero__copy { max-width: none; justify-content: flex-start; align-items: center; padding: 84px var(--gutter) 24px; text-align: center; }
   #s-hero .hero__eyebrow { margin-bottom: 14px; font-size: 12px; letter-spacing: .18em; }
   #s-hero .hero__title { font-size: clamp(38px, 11vw, 56px); }
   #s-hero .hero__lead { margin-top: 14px; font-size: 15.5px; line-height: 1.5; }
-  #s-hero .hero__actions { margin-top: 18px; gap: 4px 20px; }
-  #s-hero .hero__proof { position: absolute; left: var(--gutter); right: var(--gutter); bottom: 16px; margin: 0; padding: 0; border: 0; font-size: 13px; gap: 4px 16px; }
+  #s-hero .hero__actions { justify-content: center; margin-top: 18px; gap: 4px 20px; }
+  #s-hero .hero__proof { position: absolute; left: var(--gutter); right: var(--gutter); bottom: 16px; margin: 0; padding: 0; border: 0; font-size: 13px; gap: 4px 16px; justify-content: center; }
   #s-hero .hero__proof li:nth-child(3) { display: none; }
   #s-hero .hero__note { display: none; }
+  #s-hero .hero__stage::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 92px; background: linear-gradient(to top, var(--night) 38%, rgba(14, 16, 20, 0)); pointer-events: none; }
   #s-hero .hero__hint svg { width: 54px; height: 26px; }
   #s-hero .hero__count { font-size: clamp(64px, 20vw, 110px); bottom: 64px; }
   #s-hero .hero__loader-name { bottom: auto; top: 92px; font-size: 26px; }
@@ -443,11 +444,14 @@ p { margin: 0; }
   #s-manifeste { --r: 18px; --pos55: 58% 50%; padding: 76px 0 80px; }
   #s-manifeste .mf__title {
   font-size: clamp(34px, 9.4vw, 40px); line-height: 1.16; }
-  #s-manifeste .mf__line:nth-child(2) { padding-left: .55em; }
-  #s-manifeste .mf__line:nth-child(3) { padding-left: 1.1em; }
+  #s-manifeste .mf__eyebrow, #s-manifeste .mf__title { text-align: center; }
+  #s-manifeste .mf__line:nth-child(n) { padding-left: 0; }
   #s-manifeste .mf__pill { --h: .74; --k: .74; }
-  #s-manifeste .mf__frame { margin-top: 36px; aspect-ratio: 4 / 4.4; max-height: 64vh; }
-  #s-manifeste .mf__text { grid-template-columns: minmax(0, 1fr); gap: 28px; margin: 32px 0 0; }
+  #s-manifeste .mf__frame { margin-top: 30px; aspect-ratio: 5 / 4; max-height: none; }
+  #s-manifeste .mf__text { grid-template-columns: minmax(0, 1fr); justify-items: center; gap: 26px; margin: 30px 0 0; text-align: center; }
+  #s-manifeste .mf__quote { padding: 0; border: 0; }
+  #s-manifeste .mf__quote::before { content: ""; display: block; width: 48px; height: 1px; margin: 0 auto 22px; background: var(--cembro-deep); }
+  #s-manifeste .mf__link { justify-self: center; }
 }
 
 
@@ -456,8 +460,8 @@ p { margin: 0; }
 #s-canaux .cx__head .eyebrow { margin-bottom: 20px; }
 #s-canaux .cx__head h2 { font-size: clamp(42px, 5vw, 80px); max-width: 11em; }
 #s-canaux .cx__intro { margin-top: 20px; max-width: 42ch; font-size: clamp(17px, 1.1vw, 19px); }
-#s-canaux .cx__n { display: block; font-family: var(--f-display); font-weight: 500; font-size: 44px; line-height: 1; color: var(--cembro); }
-#s-canaux .cx__txt h3 { margin: 8px 0 14px; font-size: clamp(34px, 3vw, 52px); }
+#s-canaux .cx__n { display: block; margin-bottom: 8px; font-family: var(--f-display); font-weight: 500; font-size: 44px; line-height: 1; color: var(--cembro); }
+#s-canaux .cx__txt h3 { margin: 0 0 14px; font-size: clamp(34px, 3vw, 52px); }
 #s-canaux .cx__txt p { max-width: 40ch; }
 #s-canaux .cx__btn { margin-top: 30px; }
 #s-canaux .cx__ph, #s-canaux .cx__frame { position: relative; margin: 0; overflow: hidden; border-radius: 22px; background: var(--night-2); }
@@ -487,15 +491,25 @@ p { margin: 0; }
 
 @media (max-width: 899px) {
   #s-canaux .cx__media { display: none; }
-  #s-canaux .cx__item { margin-top: 52px; }
-  #s-canaux .cx__ph { aspect-ratio: 2 / 1; margin-bottom: 16px; }
-  #s-canaux .cx__item { margin-top: 40px; }
-  #s-canaux .cx__n { font-size: 38px; }
+  #s-canaux .cx__head { margin-bottom: 36px; text-align: center; }
+  #s-canaux .cx__head h2, #s-canaux .cx__intro { margin-left: auto; margin-right: auto; }
+  #s-canaux .cx__item { border-top: 1px solid var(--line-light); text-align: center; }
+  #s-canaux .cx__item:last-child { border-bottom: 1px solid var(--line-light); }
+  #s-canaux .cx__txt h3 { margin: 0; font-size: clamp(27px, 7.4vw, 38px); }
+  #s-canaux .cx__toggle {
+    display: grid; grid-template-columns: 44px minmax(0, 1fr) 44px; align-items: center; gap: 8px;
+    width: 100%; min-height: 76px; padding: 12px 0; border: 0; background: none; cursor: pointer;
+    color: inherit; font: inherit; letter-spacing: inherit; line-height: 1.1; text-align: center;
+  }
+  #s-canaux .cx__toggle .cx__n { margin: 0; font-size: 24px; text-align: left; }
+  #s-canaux .cx__item:last-child .cx__toggle .cx__n { visibility: hidden; }   
+  #s-canaux .cx__ico { justify-self: end; position: relative; width: 18px; height: 18px; }
+  #s-canaux .cx__ico::before, #s-canaux .cx__ico::after { content: ""; position: absolute; left: 0; right: 0; top: 50%; height: 1.5px; margin-top: -.75px; background: var(--cembro); transition: transform .45s var(--ease); }
+  #s-canaux .cx__ico::after { transform: rotate(90deg); }
+  #s-canaux .is-open .cx__ico::after { transform: rotate(0deg); }
+  #s-canaux .cx__ph { aspect-ratio: 16 / 10; margin: 4px 0 18px; }
+  #s-canaux .cx__body p { margin: 0 auto; padding-bottom: 30px; }
   #s-canaux .cx__btn { display: none; }   
-}
-@media (min-width: 600px) and (max-width: 899px) {
-  #s-canaux .cx__item { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); gap: 28px; align-items: center; }
-  #s-canaux .cx__ph { aspect-ratio: 4 / 5; margin: 0; }
 }
 
 
@@ -573,20 +587,34 @@ p { margin: 0; }
 #s-formules .fm-stat__l { display: block; margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--line); font-size: 15px; line-height: 1.4; color: var(--ink-soft); }
 
 
+#s-formules .fm-dots { display: none; }
+#s-formules .fm-dots button { position: relative; width: 44px; height: 44px; padding: 0; border: 0; background: none; cursor: pointer; }
+#s-formules .fm-dots button::before { content: ""; position: absolute; left: 8px; right: 8px; top: 21px; height: 2px; background: var(--line); transition: background .4s var(--ease); }
+#s-formules .fm-dots button[aria-current]::before { background: var(--ink); }
+
+
 @media (max-width: 999px) {
-  #s-formules .fm-stage { height: auto; min-height: 0; gap: 32px; padding: clamp(64px, 12vw, 96px) var(--gutter) 8px; }
-  #s-formules .fm-cards { width: 100%; max-width: 480px; display: grid; grid-auto-rows: 1fr; gap: 12px; perspective: 1200px; }
-  #s-formules .fm-card { aspect-ratio: auto; min-height: 260px; }
-  #s-formules .fm-card:nth-child(n) { border-radius: var(--r); }
-  #s-formules .fm-card__front {
-    --px: 12%;
-    background-size: auto 300%;
-    background-position: var(--px) calc(var(--k) * 50%);
+  #s-formules .fm-stage { height: auto; min-height: 0; gap: 28px; padding: clamp(64px, 12vw, 96px) 0 0; }
+  #s-formules .fm-head { padding: 0 var(--gutter); }
+  #s-formules .fm-cards {
+    width: 100%; gap: 12px; perspective: 1200px;
+    overflow-x: auto; overscroll-behavior-x: contain; scroll-snap-type: x mandatory; scroll-padding-inline: var(--gutter);
+    padding: 4px var(--gutter) 34px; scrollbar-width: none;
   }
+  #s-formules .fm-cards::-webkit-scrollbar { display: none; }
+  #s-formules .fm-card { flex: 0 0 min(84%, 420px); aspect-ratio: auto; min-height: 330px; scroll-snap-align: start; }
+  #s-formules .fm-card__front { background-size: cover; background-position: calc(var(--k) * 50%) 60%; }
+  #s-formules .fm-card__back { align-items: center; padding: 30px 24px; text-align: center; }
+  #s-formules .fm-card__btn { align-self: center; }
+  #s-formules .fm-dots { display: flex; justify-content: center; margin-top: -30px; }
   #s-formules .fm-band { grid-template-columns: minmax(0, 1fr); gap: 32px; }
   #s-formules .fm-stats { gap: 12px; }
   #s-formules .fm-stat__n { font-size: clamp(44px, 13vw, 72px); }
   #s-formules .fm-stat__l { font-size: 15px; }
+}
+@media (max-width: 768px) {
+  #s-formules .fm-band { text-align: center; }
+  #s-formules .fm-story { margin: 0 auto; }
 }
 
 
@@ -646,18 +674,42 @@ p { margin: 0; }
 #s-avantapres .ap-nxt__img { overflow: hidden; clip-path: polygon(50% 50%, 50% 50%, 50% 50%, 50% 50%); box-shadow: 0 24px 60px rgba(0, 0, 0, .35); }
 #s-avantapres .ap-count { position: absolute; right: 0; bottom: -30px; font-size: 12px; font-weight: 600; letter-spacing: .16em; color: var(--mist); }
 
+
+#s-avantapres .ap-cmp, #s-avantapres .ap-tabs { display: none; }
+
 @media (max-width: 860px) {
   #s-avantapres { --fh: auto; padding: 64px 0 72px; }
-  #s-avantapres .ap-grid { grid-template-columns: minmax(0, 1fr); }
-  #s-avantapres h2 { font-size: clamp(36px, 10vw, 48px); }
-  #s-avantapres .ap-stage { order: 2; width: 100%; max-width: 520px; height: auto; margin-top: 28px; justify-self: center; }
+  #s-avantapres .ap-grid { grid-template-columns: minmax(0, 1fr); text-align: center; }
+  #s-avantapres h2 { font-size: clamp(36px, 10vw, 48px); margin: 0 auto; }
   #s-avantapres .ap-text { display: contents; }
   #s-avantapres .ap-text > :nth-child(-n+3) { order: 1; }
-  #s-avantapres .ap-word { order: 3; margin-top: 18px; font-size: clamp(56px, 19vw, 92px); }
-  #s-avantapres .ap-lead { margin-bottom: 0; }
-  #s-avantapres .ap-proj { order: 4; margin-top: 14px; min-height: 0; }
-  #s-avantapres .ap-ctrl { order: 5; flex-wrap: wrap; gap: 8px 16px; }
-  #s-avantapres .ap-count { bottom: auto; top: 12px; right: 12px; padding: 6px 10px; background: rgba(14, 16, 20, .6); color: var(--pearl); }
+  #s-avantapres .ap-lead { margin: 16px auto 0; }
+  #s-avantapres .ap-word, #s-avantapres .ap-ctrl, #s-avantapres .ap-slider, #s-avantapres .ap-count { display: none; }
+  #s-avantapres .ap-tabs { order: 2; display: flex; justify-content: center; margin-top: 26px; }
+  #s-avantapres .ap-tabs button {
+    min-height: 44px; padding: 0 16px; border: 0; background: transparent; color: var(--mist); box-shadow: inset 0 0 0 1px var(--line-light);
+    font-family: var(--f-body); font-weight: 600; font-size: 12px; letter-spacing: .14em; text-transform: uppercase; white-space: nowrap; cursor: pointer;
+    transition: background .35s var(--ease), color .35s var(--ease);
+  }
+  #s-avantapres .ap-tabs button + button { margin-left: -1px; }
+  #s-avantapres .ap-tabs button[aria-pressed="true"] { background: var(--pearl); color: var(--night); box-shadow: none; }
+  #s-avantapres .ap-stage { order: 3; width: 100%; max-width: 520px; height: auto; margin-top: 16px; justify-self: center; }
+  #s-avantapres .ap-cmp {
+    --x: 50%; display: block; position: absolute; inset: 0; overflow: hidden; background: var(--night);
+    touch-action: pan-y; user-select: none; -webkit-user-select: none; cursor: ew-resize;
+  }
+  #s-avantapres .ap-cmp img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; pointer-events: none; -webkit-user-drag: none; }
+  #s-avantapres .ap-cmp__a { position: absolute; inset: 0; clip-path: inset(0 calc(100% - var(--x)) 0 0); }
+  #s-avantapres .ap-cmp__bar { position: absolute; top: 0; bottom: 0; left: var(--x); width: 2px; margin-left: -1px; background: var(--pearl); pointer-events: none; }
+  #s-avantapres .ap-cmp__knob { position: absolute; top: 50%; left: 50%; display: grid; place-items: center; width: 48px; height: 48px; transform: translate(-50%, -50%); background: var(--pearl); color: var(--night); box-shadow: 0 6px 22px rgba(0, 0, 0, .35); }
+  #s-avantapres .ap-cmp__knob svg { width: 26px; height: 14px; }
+  #s-avantapres .ap-cmp__tag { position: absolute; top: 12px; padding: 7px 10px; background: rgba(14, 16, 20, .62); color: var(--pearl); font-size: 12px; font-weight: 600; letter-spacing: .18em; text-transform: uppercase; pointer-events: none; }
+  #s-avantapres .ap-cmp__tag--a { left: 12px; }
+  #s-avantapres .ap-cmp__tag--b { right: 12px; }
+  #s-avantapres .ap-cmp__range { position: absolute; left: 0; bottom: 0; width: 100%; height: 1px; margin: 0; opacity: 0; pointer-events: none; }
+  #s-avantapres .ap-cmp:has(.ap-cmp__range:focus-visible) { outline: 2px solid var(--cembro); outline-offset: 3px; }
+  #s-avantapres .ap-proj { order: 4; margin-top: 18px; padding-top: 0; border-top: 0; min-height: 0; }
+  #s-avantapres .ap-proj__detail { margin: 6px auto 0; }
 }
 
 
@@ -718,14 +770,15 @@ p { margin: 0; }
 
 
 @media (max-width: 768px) {
-  #s-avis .avis__col { width: 100%; max-width: none; }
+  #s-avis .avis__col { width: 100%; max-width: none; text-align: center; }
   #s-avis .avis__media { position: relative; top: auto; bottom: auto; right: auto; width: auto; height: clamp(250px, 74vw, 340px); margin: 32px calc(-1 * var(--gutter)) 0; }
   #s-avis .avis__shape:first-child { clip-path: inset(3% 12% 3% 12%); }
   #s-avis .avis__quotes { margin-top: 30px; }
   #s-avis .avis__text { max-width: none; }
   #s-avis .avis__who { font-size: 15px; letter-spacing: .14em; }
-  #s-avis .avis__nav { margin-top: 30px; }
-  #s-avis .avis__count { margin-left: auto; }
+  #s-avis .avis__cap { justify-content: center; }
+  #s-avis .avis__nav { justify-content: center; margin-top: 30px; }
+  #s-avis .avis__google { align-self: center; }
 }
 
 
@@ -839,12 +892,13 @@ p { margin: 0; }
   #s-footer .ft__col a { display: flex; align-items: center; min-height: 44px; }
 }
 @media (max-width: 768px) {
-  #s-footer .ft__brand { flex-direction: column; align-items: flex-start; gap: 28px; }
+  #s-footer .ft__wrap { text-align: center; }
+  #s-footer .ft__brand { flex-direction: column; align-items: center; gap: 28px; }
   #s-footer .ft__cta { width: 100%; }
   #s-footer .ft__cols { grid-template-columns: 1fr 1fr; gap: 32px 20px; }
   #s-footer .ft__col:nth-child(-n+2) { grid-column: 1 / -1; }
-  #s-footer .ft__col { gap: 0; }
-  #s-footer .ft__col a { display: flex; align-items: center; min-height: 44px; }
+  #s-footer .ft__col { gap: 0; align-items: center; }
+  #s-footer .ft__col a { display: flex; align-items: center; justify-content: center; min-height: 44px; }
   #s-footer .ft__col p, #s-footer .ft__col li { padding: 4px 0; }
 }
 
@@ -1100,48 +1154,53 @@ html.is-intro-done .devis-fab.is-away { transform: translateY(140%); opacity: 0;
       </header>
 
       <article class="cx__item" data-tone="#18142A">
-        <figure class="cx__ph"><img data-img="canal-chromo" alt="Le lit à baldaquin baigné d’une lumière violette" width="1000" height="1080" loading="lazy"></figure>
         <div class="cx__txt">
-          <span class="cx__n" aria-hidden="true">01</span>
-          <h3>Chromothérapie</h3>
-          <p>Des lumières colorées adaptées à votre biorythme, diffusées par un plafonnier, un tableau mural ou une toile tendue au plafond.</p>
+          <h3><span class="cx__n" aria-hidden="true">01</span><span class="cx__name">Chromothérapie</span></h3>
+          <div class="cx__body">
+            <figure class="cx__ph"><img data-img="canal-chromo" alt="Le lit à baldaquin baigné d’une lumière violette" width="1000" height="1080" loading="lazy"></figure>
+            <p>Des lumières colorées adaptées à votre biorythme, diffusées par un plafonnier, un tableau mural ou une toile tendue au plafond.</p>
+          </div>
         </div>
       </article>
 
       <article class="cx__item" data-tone="#22180F">
-        <figure class="cx__ph"><img data-img="canal-aroma" alt="Le même lit dans une lumière ambrée" width="1000" height="1080" loading="lazy"></figure>
         <div class="cx__txt">
-          <span class="cx__n" aria-hidden="true">02</span>
-          <h3>Aromathérapie</h3>
-          <p>Un caisson intégré à la structure accueille une capsule en jute : une sélection de bois, de cristaux, de métaux et de végétaux.</p>
+          <h3><span class="cx__n" aria-hidden="true">02</span><span class="cx__name">Aromathérapie</span></h3>
+          <div class="cx__body">
+            <figure class="cx__ph"><img data-img="canal-aroma" alt="Le même lit dans une lumière ambrée" width="1000" height="1080" loading="lazy"></figure>
+            <p>Un caisson intégré à la structure accueille une capsule en jute : une sélection de bois, de cristaux, de métaux et de végétaux.</p>
+          </div>
         </div>
       </article>
 
       <article class="cx__item" data-tone="#0F1628">
-        <figure class="cx__ph"><img data-img="canal-sono" alt="Le même lit dans une lumière bleu nuit" width="1000" height="1080" loading="lazy"></figure>
         <div class="cx__txt">
-          <span class="cx__n" aria-hidden="true">03</span>
-          <h3>Sonothérapie</h3>
-          <p>Des ambiances sonores choisies avec vous accompagnent l’endormissement, le sommeil et le réveil.</p>
+          <h3><span class="cx__n" aria-hidden="true">03</span><span class="cx__name">Sonothérapie</span></h3>
+          <div class="cx__body">
+            <figure class="cx__ph"><img data-img="canal-sono" alt="Le même lit dans une lumière bleu nuit" width="1000" height="1080" loading="lazy"></figure>
+            <p>Des ambiances sonores choisies avec vous accompagnent l’endormissement, le sommeil et le réveil.</p>
+          </div>
         </div>
       </article>
 
       <article class="cx__item" data-tone="#0C1E20">
-        <figure class="cx__ph"><img data-img="canal-hydro" alt="Le même lit dans une lumière turquoise" width="1000" height="1080" loading="lazy"></figure>
         <div class="cx__txt">
-          <span class="cx__n" aria-hidden="true">04</span>
-          <h3>Hydrothérapie</h3>
-          <p>En literie complète, un matelas de nouvelle génération à eau ou à gel, massant ou chauffant selon vos besoins.</p>
+          <h3><span class="cx__n" aria-hidden="true">04</span><span class="cx__name">Hydrothérapie</span></h3>
+          <div class="cx__body">
+            <figure class="cx__ph"><img data-img="canal-hydro" alt="Le même lit dans une lumière turquoise" width="1000" height="1080" loading="lazy"></figure>
+            <p>En literie complète, un matelas de nouvelle génération à eau ou à gel, massant ou chauffant selon vos besoins.</p>
+          </div>
         </div>
       </article>
 
       <article class="cx__item" data-tone="#1A140E">
-        <figure class="cx__ph"><img data-img="canal-cembro" alt="Rondelle de pin cembro, cernes du bois sur fond noir" width="800" height="1000" loading="lazy"></figure>
         <div class="cx__txt">
-          <span class="cx__n" aria-hidden="true">+</span>
-          <h3>La structure en pin cembro</h3>
-          <p>Des plateaux sélectionnés un à un, usinés à la main, finis à l’huile naturelle maison qui laisse respirer les pores du bois. Une essence réputée pour son effet apaisant.</p>
-          <button class="btn cx__btn" type="button" data-devis>Demander une étude</button>
+          <h3><span class="cx__n" aria-hidden="true">+</span><span class="cx__name">La structure en pin cembro</span></h3>
+          <div class="cx__body">
+            <figure class="cx__ph"><img data-img="canal-cembro" alt="Rondelle de pin cembro, cernes du bois sur fond noir" width="800" height="1000" loading="lazy"></figure>
+            <p>Des plateaux sélectionnés un à un, usinés à la main, finis à l’huile naturelle maison qui laisse respirer les pores du bois. Une essence réputée pour son effet apaisant.</p>
+            <button class="btn cx__btn" type="button" data-devis>Demander une étude</button>
+          </div>
         </div>
       </article>
     </div>
@@ -1200,6 +1259,11 @@ html.is-intro-done .devis-fab.is-away { transform: translateY(140%); opacity: 0;
         </div>
       </article>
     </div>
+    <div class="fm-dots" role="group" aria-label="Formules">
+      <button type="button" aria-label="Formule 1" aria-current="true"></button>
+      <button type="button" aria-label="Formule 2"></button>
+      <button type="button" aria-label="Formule 3"></button>
+    </div>
   </div>
 
   <div class="fm-band wrap">
@@ -1224,6 +1288,11 @@ html.is-intro-done .devis-fab.is-away { transform: translateY(140%); opacity: 0;
       <p class="eyebrow">Avant, après</p>
       <h2 id="ap-title">La même pièce, une autre vie.</h2>
       <p class="ap-lead">Deux rénovations de CREA Immobilier à Genève, photographiées sous le même angle, du début à la fin des travaux.</p>
+
+      <div class="ap-tabs" role="group" aria-label="Chantier">
+        <button type="button" aria-pressed="true">Salle de bains</button>
+        <button type="button" aria-pressed="false">Pièce au hublot</button>
+      </div>
 
       <div class="ap-word" aria-hidden="true"><span class="ap-word__cur">Avant</span><span class="ap-word__nxt">Après</span></div>
 
@@ -1252,6 +1321,14 @@ html.is-intro-done .devis-fab.is-away { transform: translateY(140%); opacity: 0;
         <img data-img="av-hublot-avant" alt="Pièce d’appartement au hublot rond, mise à nu, sol brut" width="1000" height="1250" data-word="Avant" data-proj="Pièce au hublot, appartement" data-detail="La pièce mise à nu, le hublot rond conservé.">
         <img data-img="av-hublot-pendant" alt="La même pièce pendant les travaux : le parquet livré en piles" width="1000" height="1250" data-word="Pendant" data-proj="Pièce au hublot, appartement" data-detail="Le parquet livré, prêt à être posé.">
         <img data-img="av-hublot-apres" alt="La même pièce après : parquet posé, chaise longue noire devant le hublot, tableaux" width="1000" height="1250" data-word="Après" data-proj="Pièce au hublot, appartement" data-detail="Parquet posé, murs refaits, la pièce meublée.">
+      </div>
+      
+      <div class="ap-cmp">
+        <img class="ap-cmp__b" alt="">
+        <div class="ap-cmp__a"><img alt=""></div>
+        <span class="ap-cmp__tag ap-cmp__tag--a" aria-hidden="true">Avant</span><span class="ap-cmp__tag ap-cmp__tag--b" aria-hidden="true">Après</span>
+        <span class="ap-cmp__bar" aria-hidden="true"><span class="ap-cmp__knob"><svg viewBox="0 0 26 14" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M7 1 1 7l6 6M19 1l6 6-6 6"/></svg></span></span>
+        <input class="ap-cmp__range" type="range" min="0" max="100" value="50" aria-label="Comparer la photo avant et la photo après">
       </div>
       <div class="ap-slider" role="img" aria-label="Salle de bains sous les combles avant les travaux"></div>
       <figcaption class="ap-count"><span class="ap-count__cur">01</span> / 05</figcaption>
@@ -2243,7 +2320,9 @@ SECTIONS.push({
 /* 03-manifeste */
 /* Manifeste : porté de Scroll Animation #17 (Image Expansion Typography). Les pastilles passent de l'état fermé à
    l'état ouvert au défilement (scrub), l'image gardant sa taille d'ouverture (révélation depuis le centre) ; la dernière
-   s'ouvre ensuite en grand cadre (effet 3 du catalogue). Largeurs en em : le resize se recale tout seul. */
+   s'ouvre ensuite en grand cadre (effet 3 du catalogue). Largeurs en em : le resize se recale tout seul.
+   Mobile : le cadre ne descend plus depuis la pastille (pendant le trajet, il laissait un grand vide sous le titre) :
+   la dernière pastille s'ouvre comme les autres et le cadre se dévoile sur place, depuis son centre. */
 SECTIONS.push({
   id: "manifeste",
   init(ctx) {
@@ -2260,36 +2339,45 @@ SECTIONS.push({
     const shut = el => num(el, "--h") + "em";                    // fermée : un disque
     const wide = el => num(el, "--w") * num(el, "--k") + "em";   // ouverte
 
-    // pastilles 1 et 2 : chacune s'élargit pendant que sa ligne monte dans l'écran
-    pills.slice(0, -1).forEach(p => {
-      gsap.fromTo(p, { width: () => shut(p) }, {
-        width: () => wide(p), ease: "sine.inOut",
-        scrollTrigger: { trigger: p.parentElement, start: "top 92%", end: "top 52%", scrub: 1, invalidateOnRefresh: true },
+    // une pastille s'élargit pendant que sa ligne monte dans l'écran
+    const grow = p => gsap.fromTo(p, { width: () => shut(p) }, {
+      width: () => wide(p), ease: "sine.inOut",
+      scrollTrigger: { trigger: p.parentElement, start: "top 92%", end: "top 52%", scrub: 1, invalidateOnRefresh: true },
+    });
+    pills.slice(0, -1).forEach(grow);
+    const mm = gsap.matchMedia();
+
+    mm.add("(min-width: 769px)", () => {
+      // départ du grand cadre : la dernière pastille ouverte, mesurée par rapport au cadre
+      const from = () => {
+        const keep = last.style.width;
+        last.style.width = wide(last);
+        const p = last.getBoundingClientRect(), f = frame.getBoundingClientRect();
+        last.style.width = keep;
+        return { x: p.left - f.left, y: p.top - f.top, w: p.width, h: p.height };
+      };
+      // la pastille s'ouvre, puis le cadre en part : d'abord vers le bas (il quitte la ligne sans couvrir le texte),
+      // ensuite vers la gauche jusqu'à la pleine largeur
+      const tl = gsap.timeline({
+        scrollTrigger: { trigger: last.parentElement, start: "top 92%", endTrigger: frame, end: "top 22%", scrub: 1, invalidateOnRefresh: true },
       });
+      tl.fromTo(last, { width: () => shut(last) }, { width: () => wide(last), ease: "sine.inOut", duration: 1 })
+        // le cadre n'apparaît qu'une fois la pastille ouverte (même image, même cadrage : passage sans saut)
+        .fromTo(open, { autoAlpha: 0 }, { autoAlpha: 1, duration: .02, ease: "none" }, .98)
+        .fromTo(open,
+          { y: () => from().y, height: () => from().h, borderRadius: () => from().h / 2 },
+          { y: 0, height: () => frame.clientHeight, borderRadius: () => num(root, "--r"), ease: "power2.inOut", duration: 2.4 }, 1)
+        .fromTo(open,
+          { x: () => from().x, width: () => from().w },
+          { x: 0, width: () => frame.clientWidth, ease: "power2.inOut", duration: 1.6 }, 2);
     });
 
-    // départ du grand cadre : la dernière pastille ouverte, mesurée par rapport au cadre
-    const from = () => {
-      const keep = last.style.width;
-      last.style.width = wide(last);
-      const p = last.getBoundingClientRect(), f = frame.getBoundingClientRect();
-      last.style.width = keep;
-      return { x: p.left - f.left, y: p.top - f.top, w: p.width, h: p.height };
-    };
-    // la pastille s'ouvre, puis le cadre en part : d'abord vers le bas (il quitte la ligne sans couvrir le texte),
-    // ensuite vers la gauche jusqu'à la pleine largeur
-    const tl = gsap.timeline({
-      scrollTrigger: { trigger: last.parentElement, start: "top 92%", endTrigger: frame, end: "top 22%", scrub: 1, invalidateOnRefresh: true },
+    mm.add("(max-width: 768px)", () => {
+      grow(last);
+      const st = { trigger: frame, start: "top 95%", end: "top 40%", scrub: 1 };
+      gsap.fromTo(open, { clipPath: "inset(16% 22% 16% 22%)" }, { clipPath: "inset(0% 0% 0% 0%)", ease: "power2.inOut", scrollTrigger: st });
+      gsap.fromTo(open.querySelector("img"), { scale: 1.22 }, { scale: 1, ease: "power2.inOut", scrollTrigger: { ...st } });
     });
-    tl.fromTo(last, { width: () => shut(last) }, { width: () => wide(last), ease: "sine.inOut", duration: 1 })
-      // le cadre n'apparaît qu'une fois la pastille ouverte (même image, même cadrage : passage sans saut)
-      .fromTo(open, { autoAlpha: 0 }, { autoAlpha: 1, duration: .02, ease: "none" }, .98)
-      .fromTo(open,
-        { y: () => from().y, height: () => from().h, borderRadius: () => from().h / 2 },
-        { y: 0, height: () => frame.clientHeight, borderRadius: () => num(root, "--r"), ease: "power2.inOut", duration: 2.4 }, 1)
-      .fromTo(open,
-        { x: () => from().x, width: () => from().w },
-        { x: 0, width: () => frame.clientWidth, ease: "power2.inOut", duration: 1.6 }, 2);
 
     // puis le texte de présentation
     gsap.from(text.children, {
@@ -2302,6 +2390,7 @@ SECTIONS.push({
 /* 04-canaux */
 // ---------- Scroll Animation #29 : la photo collée à droite se découpe vers la suivante quand le canal suivant arrive ----------
 // Adapté : le fond de la section prend la teinte du canal (data-tone), le nom du canal change dans la pastille de la photo.
+// Mobile : accordéon (un canal ouvert à la fois), la photo du canal ouvert se découpe à l'ouverture, le fond prend sa lumière.
 SECTIONS.push({
   id: "canaux",
   init(ctx) {
@@ -2310,7 +2399,7 @@ SECTIONS.push({
     if (!sec) return;
     const items = [...sec.querySelectorAll(".cx__item")];
     const tones = items.map(it => it.dataset.tone);
-    const names = items.map(it => it.querySelector("h3").textContent.replace(/^La structure en /, ""));
+    const names = items.map(it => it.querySelector(".cx__name").textContent.replace(/^La structure en /, ""));
     const wraps = [...sec.querySelectorAll(".cx__img")];
     const imgs = wraps.map(w => w.querySelector("img"));
     const tag = sec.querySelector(".cx__tag span");
@@ -2354,21 +2443,48 @@ SECTIONS.push({
       return () => { sec.style.backgroundColor = ""; };
     });
 
-    // mobile : chaque photo se révèle une fois à son passage, par le même découpage ; le fond prend la teinte du canal à l'écran
+    // mobile : accordéon. Le titre devient un bouton ici (sur desktop les canaux restent de simples titres)
     mm.add("(max-width: 899px)", () => {
-      items.forEach((it, i) => {
-        ctx.ScrollTrigger.create({
-          trigger: it, start: "top 60%", end: "bottom 60%",
-          onToggle: self => { if (self.isActive) gsap.to(sec, { backgroundColor: tones[i], duration: ctx.reduced ? 0 : .8, overwrite: true }); },
-        });
+      const heads = items.map(it => it.querySelector("h3"));
+      const bodies = items.map((it, i) => Object.assign(it.querySelector(".cx__body"), { id: `cx-b${i}` }));
+      const btns = heads.map((h, i) => {
+        const b = document.createElement("button"), ico = document.createElement("span");
+        b.type = "button"; b.className = "cx__toggle"; b.setAttribute("aria-controls", bodies[i].id);
+        ico.className = "cx__ico"; ico.setAttribute("aria-hidden", "true");
+        b.append(...h.childNodes, ico); h.append(b);
+        return b;
       });
-      if (ctx.reduced) return;
-      sec.querySelectorAll(".cx__ph img").forEach(img => {
-        gsap.fromTo(img, { clipPath: GONE, objectPosition: "50% 70%" }, {
-          clipPath: FULL, objectPosition: "50% 35%", duration: 1.3, ease: "power3.out",
-          scrollTrigger: { trigger: img.parentNode, start: "top 85%", once: true },
+      let open = -1;
+      const set = (i, anim) => {
+        open = i;
+        items.forEach((it, k) => {
+          const on = k === i;
+          it.classList.toggle("is-open", on);
+          btns[k].setAttribute("aria-expanded", on);
+          bodies[k].inert = !on;
+          gsap.to(bodies[k], { height: on ? "auto" : 0, duration: anim ? .6 : 0, ease: "power3.inOut", overwrite: true });
         });
-      });
+        if (i >= 0) {
+          gsap.to(sec, { backgroundColor: tones[i], duration: anim ? .8 : 0, overwrite: true });
+          if (anim) gsap.fromTo(bodies[i].querySelector("img"), { clipPath: GONE, objectPosition: "50% 70%" },
+            { clipPath: FULL, objectPosition: "50% 35%", duration: 1.1, ease: "power3.out", delay: .1 });
+        }
+        // la page a changé de hauteur ; si le volet du dessus s'est refermé, le titre ouvert est remis en vue
+        gsap.delayedCall(anim ? .65 : 0, () => {
+          ctx.ScrollTrigger.refresh();
+          if (anim && i >= 0 && items[i].getBoundingClientRect().top < 64) ctx.lenis.scrollTo(items[i], { offset: -72, duration: .6 });
+        });
+      };
+      gsap.set(bodies, { overflow: "hidden" });
+      set(0, false);
+      btns.forEach((b, i) => b.addEventListener("click", () => set(open === i ? -1 : i, !ctx.reduced)));
+      return () => {
+        btns.forEach((b, i) => { b.lastChild.remove(); heads[i].append(...b.childNodes); b.remove(); });
+        items.forEach(it => it.classList.remove("is-open"));
+        bodies.forEach(b => { b.inert = false; });
+        gsap.set(bodies, { clearProps: "height,overflow" });
+        sec.style.backgroundColor = "";
+      };
     });
   },
 });
@@ -2468,13 +2584,23 @@ SECTIONS.push({
       };
     });
 
-    // mobile / tablette : cartes en colonne, chacune se retourne quand elle passe aux deux tiers de l'écran
+    // mobile / tablette : slider horizontal (défilement natif aimanté) ; les cartes se retournent en cascade à l'arrivée,
+    // les tirets suivent la carte affichée et y mènent
     mm.add("(max-width: 999px)", () => {
-      if (ctx.reduced) { gsap.set(cards, { rotationY: 180 }); return; }
-      cards.forEach(c => gsap.to(c, {
-        rotationY: 180, duration: 0.9, ease: "power3.inOut",
-        scrollTrigger: { trigger: c, start: "center 62%", toggleActions: "play none none reverse" },
-      }));
+      const dots = gsap.utils.toArray(".fm-dots button", sec), ac = new AbortController();
+      const step = () => cards[1].offsetLeft - cards[0].offsetLeft;
+      const mark = () => {
+        const i = Math.min(cards.length - 1, Math.round(cont.scrollLeft / step()));
+        dots.forEach((d, k) => (k === i ? d.setAttribute("aria-current", "true") : d.removeAttribute("aria-current")));
+      };
+      cont.addEventListener("scroll", mark, { passive: true, signal: ac.signal });
+      dots.forEach((d, i) => d.addEventListener("click", () => cont.scrollTo({ left: i * step(), behavior: ctx.reduced ? "auto" : "smooth" }), { signal: ac.signal }));
+      if (ctx.reduced) gsap.set(cards, { rotationY: 180 });
+      else gsap.to(cards, {
+        rotationY: 180, duration: 0.9, ease: "power3.inOut", stagger: 0.12,
+        scrollTrigger: { trigger: cont, start: "top 70%", toggleActions: "play none none reverse" },
+      });
+      return () => { ac.abort(); cont.scrollLeft = 0; };
     });
 
     // compteurs : créés après l'épinglage pour que leurs positions tiennent compte de l'espace qu'il ajoute
@@ -2498,6 +2624,9 @@ SECTIONS.push({
 // s'agrandit jusqu'au cadre ; le titre sort lettre à lettre par le haut pendant que le suivant monte. Adapté : cadre 4/5
 // au lieu du plein écran, titre = étape du chantier, lecture automatique (pause hors écran, au survol, au focus), clic ou
 // « Étape suivante » pour avancer, tirets pour aller à une étape. Mouvement réduit : fondu, sans lecture automatique.
+// Mobile : la fenêtre au centre cachait la photo et rien ne se manipulait au doigt. Le cadre devient un comparateur :
+// la photo « avant » posée sur la photo « après », un curseur à faire glisser (ou à toucher là où l'on veut le poser),
+// un sélecteur pour passer d'un chantier à l'autre.
 SECTIONS.push({
   id: "avantapres",
   init(ctx) {
@@ -2507,78 +2636,137 @@ SECTIONS.push({
     const $ = s => root.querySelector(s), $$ = s => [...root.querySelectorAll(s)];
     const slider = $(".ap-slider"), stage = $(".ap-stage");
     const items = $$(".ap-src img").map(im => ({ src: im.src, alt: im.alt, word: im.dataset.word, proj: im.dataset.proj, detail: im.dataset.detail }));
-    const wCur = $(".ap-word__cur"), wNxt = $(".ap-word__nxt");
-    const name = $(".ap-proj__name"), detail = $(".ap-proj__detail"), countEl = $(".ap-count__cur");
-    const dots = $$(".ap-dots button");
-    const N = items.length, DWELL = 3.4, PREVIEW = .34;
-    let cur = 0, nxt = 1, busy = false;
+    const name = $(".ap-proj__name"), detail = $(".ap-proj__detail");
+    const mm = gsap.matchMedia();
 
-    const chars = (el, txt) => { el.innerHTML = [...txt].map(c => `<i>${c === " " ? "&nbsp;" : c}</i>`).join(""); return [...el.children]; };
-    const box = () => ({ w: slider.clientWidth, h: slider.clientHeight });
+    mm.add("(min-width: 861px)", () => {
+      const ac = new AbortController(), on = { signal: ac.signal };
+      const wCur = $(".ap-word__cur"), wNxt = $(".ap-word__nxt"), countEl = $(".ap-count__cur");
+      const dots = $$(".ap-dots button");
+      const N = items.length, DWELL = 3.4, PREVIEW = .34;
+      let cur = 0, nxt = 1, busy = false, tl = null;
 
-    // état : photo courante plein cadre + étape suivante en petite fenêtre fermée au centre
-    function render() {
-      const a = items[cur], b = items[nxt];
-      slider.innerHTML = `<div class="ap-cur"><img src="${a.src}" alt=""></div><div class="ap-nxt"><div class="ap-nxt__img"><img src="${b.src}" alt=""></div></div>`;
-      const { w, h } = box();
-      gsap.set(slider.querySelector(".ap-nxt__img"), { width: w * PREVIEW, height: h * PREVIEW, clipPath: "polygon(50% 50%, 50% 50%, 50% 50%, 50% 50%)" });
-      chars(wCur, a.word); chars(wNxt, b.word);
-      gsap.set(wNxt, { visibility: "hidden" });
-      slider.setAttribute("aria-label", a.alt);
-      name.textContent = a.proj; detail.textContent = a.detail;
-      countEl.textContent = String(cur + 1).padStart(2, "0");
-      dots.forEach((d, i) => (i === cur ? d.setAttribute("aria-current", "step") : d.removeAttribute("aria-current")));
-    }
-    const revealPreview = () => gsap.to(slider.querySelector(".ap-nxt__img"), { clipPath: "polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)", duration: .7, ease: "power3.out" });
+      const chars = (el, txt) => { el.innerHTML = [...txt].map(c => `<i>${c === " " ? "&nbsp;" : c}</i>`).join(""); return [...el.children]; };
+      const box = () => ({ w: slider.clientWidth, h: slider.clientHeight });
 
-    function go(to) {
-      if (busy || to === cur) return;
-      if (to !== nxt) { nxt = to; render(); gsap.set(slider.querySelector(".ap-nxt__img"), { clipPath: "polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)" }); }
-      busy = true;
-      timer.pause();
-      const curImg = slider.querySelector(".ap-cur img"), wrap = slider.querySelector(".ap-nxt__img");
-      const done = () => { cur = nxt; nxt = (cur + 1) % N; render(); busy = false; if (!ctx.reduced) revealPreview(); restart(); };
-      if (ctx.reduced) { done(); return; }
-      const out = [...wCur.children], inn = [...wNxt.children];
-      const { w, h } = box();
-      gsap.set(wNxt, { visibility: "visible" });
-      gsap.set(inn, { yPercent: 110 });
-      gsap.timeline({ onComplete: done })
-        .to(curImg, { scale: 1.8, duration: 1.5, ease: "power3.out" }, 0)
-        .to(out, { yPercent: -110, stagger: .04, duration: .38, ease: "power3.out" }, 0)
-        .to(inn, { yPercent: 0, stagger: .04, duration: .45, ease: "power3.out" }, .22)
-        .to(wrap, { clipPath: "polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)", duration: .7, ease: "power3.out" }, .18)
-        .to(wrap, { width: w, height: h, duration: 1.6, ease: "power3.out" }, .18)
-        .to([name, detail], { autoAlpha: 0, duration: .25, ease: "power1.in" }, .1)
-        .add(() => { name.textContent = items[nxt].proj; detail.textContent = items[nxt].detail; }, .36)
-        .to([name, detail], { autoAlpha: 1, duration: .5, ease: "power2.out" }, .4);
-    }
+      // état : photo courante plein cadre + étape suivante en petite fenêtre fermée au centre
+      function render() {
+        const a = items[cur], b = items[nxt];
+        slider.innerHTML = `<div class="ap-cur"><img src="${a.src}" alt=""></div><div class="ap-nxt"><div class="ap-nxt__img"><img src="${b.src}" alt=""></div></div>`;
+        const { w, h } = box();
+        gsap.set(slider.querySelector(".ap-nxt__img"), { width: w * PREVIEW, height: h * PREVIEW, clipPath: "polygon(50% 50%, 50% 50%, 50% 50%, 50% 50%)" });
+        chars(wCur, a.word); chars(wNxt, b.word);
+        gsap.set(wNxt, { visibility: "hidden" });
+        slider.setAttribute("aria-label", a.alt);
+        name.textContent = a.proj; detail.textContent = a.detail;
+        countEl.textContent = String(cur + 1).padStart(2, "0");
+        dots.forEach((d, i) => (i === cur ? d.setAttribute("aria-current", "step") : d.removeAttribute("aria-current")));
+      }
+      const revealPreview = () => { tl = gsap.to(slider.querySelector(".ap-nxt__img"), { clipPath: "polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)", duration: .7, ease: "power3.out" }); };
 
-    // lecture automatique : à l'écran, sans survol (souris) ni focus clavier, jamais en mouvement réduit
-    const st = { vis: false, hover: false, focus: false };
-    const timer = gsap.delayedCall(DWELL, () => go(nxt)).pause();
-    const sync = () => timer.paused(!(st.vis && !st.hover && !st.focus && !busy && !ctx.reduced));
-    function restart() { timer.restart(true); sync(); }
+      function go(to) {
+        if (busy || to === cur) return;
+        if (to !== nxt) { nxt = to; render(); gsap.set(slider.querySelector(".ap-nxt__img"), { clipPath: "polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)" }); }
+        busy = true;
+        timer.pause();
+        const curImg = slider.querySelector(".ap-cur img"), wrap = slider.querySelector(".ap-nxt__img");
+        const done = () => { cur = nxt; nxt = (cur + 1) % N; render(); busy = false; if (!ctx.reduced) revealPreview(); restart(); };
+        if (ctx.reduced) { done(); return; }
+        const out = [...wCur.children], inn = [...wNxt.children];
+        const { w, h } = box();
+        gsap.set(wNxt, { visibility: "visible" });
+        gsap.set(inn, { yPercent: 110 });
+        tl = gsap.timeline({ onComplete: done })
+          .to(curImg, { scale: 1.8, duration: 1.5, ease: "power3.out" }, 0)
+          .to(out, { yPercent: -110, stagger: .04, duration: .38, ease: "power3.out" }, 0)
+          .to(inn, { yPercent: 0, stagger: .04, duration: .45, ease: "power3.out" }, .22)
+          .to(wrap, { clipPath: "polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)", duration: .7, ease: "power3.out" }, .18)
+          .to(wrap, { width: w, height: h, duration: 1.6, ease: "power3.out" }, .18)
+          .to([name, detail], { autoAlpha: 0, duration: .25, ease: "power1.in" }, .1)
+          .add(() => { name.textContent = items[nxt].proj; detail.textContent = items[nxt].detail; }, .36)
+          .to([name, detail], { autoAlpha: 1, duration: .5, ease: "power2.out" }, .4);
+      }
 
-    slider.addEventListener("click", () => go(nxt));
-    $(".ap-step").addEventListener("click", () => go(nxt));
-    dots.forEach((d, i) => d.addEventListener("click", () => go(i)));
-    stage.addEventListener("pointerenter", e => { if (e.pointerType === "mouse") { st.hover = true; sync(); } });
-    stage.addEventListener("pointerleave", e => { if (e.pointerType === "mouse") { st.hover = false; sync(); } });
-    root.addEventListener("focusin", e => { st.focus = e.target.matches(":focus-visible"); sync(); });
-    root.addEventListener("focusout", e => { if (!root.contains(e.relatedTarget)) { st.focus = false; sync(); } });
-    ctx.whenVisible(stage, () => { st.vis = true; sync(); }, () => { st.vis = false; sync(); }, "-10% 0px");
+      // lecture automatique : à l'écran, sans survol (souris) ni focus clavier, jamais en mouvement réduit
+      const st = { vis: false, hover: false, focus: false };
+      const timer = gsap.delayedCall(DWELL, () => go(nxt)).pause();
+      const sync = () => timer.paused(!(st.vis && !st.hover && !st.focus && !busy && !ctx.reduced));
+      function restart() { timer.restart(true); sync(); }
 
-    // la fenêtre d'aperçu suit la taille du cadre
-    new ResizeObserver(() => {
-      if (busy) return;
-      const { w, h } = box(), wrap = slider.querySelector(".ap-nxt__img");
-      if (wrap) gsap.set(wrap, { width: w * PREVIEW, height: h * PREVIEW });
-    }).observe(slider);
+      slider.addEventListener("click", () => go(nxt), on);
+      $(".ap-step").addEventListener("click", () => go(nxt), on);
+      dots.forEach((d, i) => d.addEventListener("click", () => go(i), on));
+      stage.addEventListener("pointerenter", e => { if (e.pointerType === "mouse") { st.hover = true; sync(); } }, on);
+      stage.addEventListener("pointerleave", e => { if (e.pointerType === "mouse") { st.hover = false; sync(); } }, on);
+      root.addEventListener("focusin", e => { st.focus = e.target.matches(":focus-visible"); sync(); }, on);
+      root.addEventListener("focusout", e => { if (!root.contains(e.relatedTarget)) { st.focus = false; sync(); } }, on);
+      const io = ctx.whenVisible(stage, () => { st.vis = true; sync(); }, () => { st.vis = false; sync(); }, "-10% 0px");
 
-    render();
-    if (!ctx.reduced) revealPreview();
-    restart();
+      // la fenêtre d'aperçu suit la taille du cadre
+      const ro = new ResizeObserver(() => {
+        if (busy) return;
+        const { w, h } = box(), wrap = slider.querySelector(".ap-nxt__img");
+        if (wrap) gsap.set(wrap, { width: w * PREVIEW, height: h * PREVIEW });
+      });
+      ro.observe(slider);
+
+      render();
+      if (!ctx.reduced) revealPreview();
+      restart();
+      return () => { ac.abort(); io.disconnect(); ro.disconnect(); timer.kill(); if (tl) tl.kill(); gsap.set([name, detail], { clearProps: "opacity,visibility" }); };
+    });
+
+    mm.add("(max-width: 860px)", () => {
+      const ac = new AbortController(), on = { signal: ac.signal };
+      const cmp = $(".ap-cmp"), imA = $(".ap-cmp__a img"), imB = $(".ap-cmp__b"), range = $(".ap-cmp__range");
+      const tabs = $$(".ap-tabs button");
+      const PAIRS = [[0, 1], [2, 4]];                   // chantier : [avant, après] dans la liste des étapes
+      const pos = { x: 50 };
+      let hint = null, drag = null;
+      const setX = v => { pos.x = Math.max(0, Math.min(100, v)); cmp.style.setProperty("--x", `${pos.x}%`); range.value = Math.round(pos.x); };
+      const stop = () => { if (hint) { hint.kill(); hint = null; } };
+      // petit aller-retour du curseur à l'arrivée : la photo se manipule
+      const sweep = () => {
+        if (ctx.reduced) return;
+        stop();
+        hint = gsap.timeline({ onUpdate: () => setX(pos.x) })
+          .to(pos, { x: 24, duration: .7, ease: "power2.inOut" })
+          .to(pos, { x: 76, duration: 1.1, ease: "power2.inOut" })
+          .to(pos, { x: 50, duration: .7, ease: "power2.inOut" });
+      };
+      const show = (p, anim) => {
+        const [a, b] = PAIRS[p];
+        imA.src = items[a].src; imA.alt = items[a].alt;
+        imB.src = items[b].src; imB.alt = items[b].alt;
+        name.textContent = items[b].proj; detail.textContent = items[b].detail;
+        tabs.forEach((t, i) => t.setAttribute("aria-pressed", i === p));
+        stop(); setX(50);
+        if (anim && !ctx.reduced) { gsap.fromTo(cmp, { autoAlpha: .3 }, { autoAlpha: 1, duration: .45, ease: "power2.out" }); sweep(); }
+      };
+      const xAt = e => { const r = cmp.getBoundingClientRect(); return (e.clientX - r.left) / r.width * 100; };
+      cmp.addEventListener("pointerdown", e => {
+        stop();
+        drag = { id: e.pointerId, x: e.clientX, y: e.clientY, on: e.pointerType === "mouse" };
+        if (drag.on) { cmp.setPointerCapture(e.pointerId); setX(xAt(e)); }
+      }, on);
+      cmp.addEventListener("pointermove", e => {
+        if (!drag || e.pointerId !== drag.id) return;
+        if (!drag.on) {                                 // au doigt : glissé horizontal = curseur, vertical = défilement de la page
+          const dx = Math.abs(e.clientX - drag.x), dy = Math.abs(e.clientY - drag.y);
+          if (dx < 6 && dy < 6) return;
+          if (dy > dx) { drag = null; return; }
+          drag.on = true; cmp.setPointerCapture(e.pointerId);
+        }
+        setX(xAt(e));
+      }, on);
+      cmp.addEventListener("pointerup", e => { if (drag && !drag.on) setX(xAt(e)); drag = null; }, on);   // simple toucher : le curseur y va
+      cmp.addEventListener("pointercancel", () => { drag = null; }, on);
+      range.addEventListener("input", () => { stop(); setX(+range.value); }, on);
+      tabs.forEach((t, i) => t.addEventListener("click", () => show(i, true), on));
+      show(0, false);
+      ctx.ScrollTrigger.create({ trigger: cmp, start: "top 75%", once: true, onEnter: sweep });
+      return () => { ac.abort(); stop(); };
+    });
   },
 });
 
@@ -2929,10 +3117,14 @@ SECTIONS.push({
   init(ctx) {
     const ft = document.getElementById("s-footer");
     if (!ft || ctx.reduced) return;
-    // le contenu part 35 % plus haut (masqué par overflow) et rejoint sa place quand le bas du pied de page touche l'écran
-    ctx.gsap.fromTo(ft.querySelector(".ft__inner"), { yPercent: -35 }, {
-      yPercent: 0, ease: "none",
-      scrollTrigger: { trigger: ft, start: "top bottom", end: "bottom bottom", scrub: true },
+    // le contenu part 35 % plus haut (masqué par overflow) et rejoint sa place quand le bas du pied de page touche l'écran.
+    // Pas sur mobile : le pied de page y est plus haut que l'écran, son bouton restait à moitié caché sous la section
+    // précédente pendant presque tout le défilement, et le toucher tombait sur elle
+    ctx.gsap.matchMedia().add("(min-width: 769px)", () => {
+      ctx.gsap.fromTo(ft.querySelector(".ft__inner"), { yPercent: -35 }, {
+        yPercent: 0, ease: "none",
+        scrollTrigger: { trigger: ft, start: "top bottom", end: "bottom bottom", scrub: true },
+      });
     });
   },
 });
