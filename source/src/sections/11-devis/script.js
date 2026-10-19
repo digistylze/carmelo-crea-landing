@@ -45,7 +45,7 @@ SECTIONS.push({
 
     const check = n => {
       const f = form.elements;
-      if (n === 1) { const ok = choices.some(c => c.checked); return fail(1, ok ? [] : [choices[0]], ok ? "" : "Choisissez l'option qui vous ressemble le plus."); }
+      if (n === 1) { const ok = choices.some(c => c.checked); return fail(1, ok ? [] : [choices[0]], ok ? "" : "Choisissez l’option qui vous ressemble le plus."); }
       const bad = [], msg = [];
       if (f.nom.value.trim().length < 2) { bad.push(f.nom); msg.push("Indiquez votre nom."); }
       if (f.tel.value.replace(/\D/g, "").length < 9) { bad.push(f.tel); msg.push("Indiquez un numéro de téléphone valide."); }
@@ -87,10 +87,10 @@ SECTIONS.push({
       const text = summary();
       if (b.dataset.send === "wa") {
         window.open(`https://wa.me/${WA}?text=${encodeURIComponent(text)}`, "_blank", "noopener");
-        status.textContent = "WhatsApp s'ouvre avec votre demande déjà rédigée. Il ne reste qu'à l'envoyer.";
+        status.textContent = "WhatsApp s’ouvre avec votre demande déjà rédigée. Il ne reste qu’à l’envoyer.";
       } else {
         location.href = `mailto:${EMAIL}?subject=${encodeURIComponent("Espace nuit : demande d'étude")}&body=${encodeURIComponent(text)}`;
-        status.textContent = "Votre messagerie s'ouvre avec la demande déjà rédigée. Il ne reste qu'à l'envoyer.";
+        status.textContent = "Votre messagerie s’ouvre avec la demande déjà rédigée. Il ne reste qu’à l’envoyer.";
       }
     }));
 

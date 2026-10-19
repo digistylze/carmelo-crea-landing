@@ -16,18 +16,20 @@ SECTIONS.push({
     const LITS = ["Garder mon lit", "Tête de lit", "Espace nuit complet"];
     const DEVIS = ["Sans toucher au lit", "Tête de lit", "Espace nuit complet"];
     const NOTES = [
-      "L'investissement le plus léger : nous transformons la pièce, votre lit reste en place.",
-      "Une tour en pin cembro autour de votre literie : tête de lit capitonnée, niche éclairée, tablette.",
-      "Le portique complet : ciel de lit étoilé, voilages, tête de lit et socle en pin cembro.",
+      "L’investissement le plus léger : nous transformons la pièce, votre lit reste en place.",
+      "Une tour en pin cembro autour de votre literie : tête de lit capitonnée, niche éclairée et tablette.",
+      "Le portique complet : ciel de lit étoilé, voilages, tête de lit et socle en pin cembro.",
     ];
     const APPS = Object.fromEntries($$('input[name="cfg-app"]').map(i => [i.value, i.closest("label").querySelector("strong").textContent]));
     const st = { lit: 0, apps: new Set($$('input[name="cfg-app"]:checked').map(i => i.value)) };
     const wakeTxt = () => { const m = ctx.wake ?? 420; return `${String(Math.floor(m / 60)).padStart(2, "0")}:${String(m % 60).padStart(2, "0")}`; };
-    const describe = () => `${LITS[st.lit]} ; ${[...st.apps].map(k => APPS[k]).join(", ") || "aucune application"}${st.apps.has("ecran") ? ` ; réveil réglé à ${wakeTxt()}` : ""}`;
+    const wakeProse = () => { const m = ctx.wake ?? 420, mm = m % 60; return `${Math.floor(m / 60)} h${mm ? " " + String(mm).padStart(2, "0") : ""}`; };
+    const low = t => t.charAt(0).toLowerCase() + t.slice(1);
+    const describe = () => `${LITS[st.lit]} ; ${[...st.apps].map(k => low(APPS[k])).join(", ") || "aucune application"}${st.apps.has("ecran") ? ` ; réveil réglé à ${wakeProse()}` : ""}`;
     const sum = () => {
       const n = st.apps.size + (st.lit > 0 ? 1 : 0);
       $(".cfg__count").innerHTML = `<strong>${n}</strong> élément${n > 1 ? "s" : ""} · intervention de 2 à 5 jours selon la configuration`;
-      $(".cfg__canvas").setAttribute("aria-label", `Visualisation 3D : ${describe()}`);
+      $(".cfg__canvas").setAttribute("aria-label", `Visualisation 3D : ${describe()}`);
     };
     $$('input[name="cfg-lit"]').forEach(r => r.addEventListener("change", () => {
       st.lit = +r.value; $(".cfg__note").textContent = NOTES[st.lit]; sum(); if (room) room.lit(st.lit);

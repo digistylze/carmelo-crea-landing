@@ -17,6 +17,8 @@ SECTIONS.push({
     const SPAN = 525;                                   // de « réveil - 8 h 45 » au réveil
     ctx.wake = 7 * 60;
     const fmt = m => { m = ((Math.round(m) % 1440) + 1440) % 1440; return `${String(Math.floor(m / 60)).padStart(2, "0")}:${String(m % 60).padStart(2, "0")}`; };
+    // dans le texte, l'heure s'écrit « 22 h 15 », « 7 h » (l'écran garde l'affichage numérique)
+    const prose = m => { m = ((Math.round(m) % 1440) + 1440) % 1440; const mm = m % 60; return `${Math.floor(m / 60)} h${mm ? " " + String(mm).padStart(2, "0") : ""}`; };
 
     let shown = -1, minute = -SPAN;
     const setPhase = (i, instant) => {
@@ -32,7 +34,7 @@ SECTIONS.push({
     };
     const setMinute = m => { minute = m; timeEl.textContent = fmt(ctx.wake + m); };
     // horaires des phases, recalculés à chaque réglage du réveil
-    const ranges = () => $$(".nuit__range").forEach(r => { r.textContent = `de ${fmt(ctx.wake + +r.dataset.from)} à ${fmt(ctx.wake + +r.dataset.to)}`; });
+    const ranges = () => $$(".nuit__range").forEach(r => { r.textContent = `de ${prose(ctx.wake + +r.dataset.from)} à ${prose(ctx.wake + +r.dataset.to)}`; });
     const setWake = m => {
       ctx.wake = ((m % 1440) + 1440) % 1440;
       wakeEl.textContent = fmt(ctx.wake);
