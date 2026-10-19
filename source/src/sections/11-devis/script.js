@@ -14,7 +14,7 @@ SECTIONS.push({
     const fab = document.querySelector(".devis-fab");
     const choices = qa('input[name="projet"]');
     const WA = "41793870506", EMAIL = "carmelo@crea-immobilier.ch", N = steps.length;
-    let isOpen = false, tl = null, lastFocus = null, step = 1;
+    let isOpen = false, tl = null, lastFocus = null, step = 1, config = "";
 
     const visible = el => el.getClientRects().length > 0 && !el.disabled;
     const fields = () => qa("button, input, textarea, a[href]").filter(visible);
@@ -75,6 +75,7 @@ SECTIONS.push({
       return [
         "Bonjour, je m'intéresse au concept L'Éveil des sens.", "",
         `Projet : ${projet}`,
+        config ? `Configuration : ${config}` : null,
         v(f.commune) ? `Commune : ${v(f.commune)}` : null,
         "",
         `Nom : ${v(f.nom)}`,
@@ -115,7 +116,8 @@ SECTIONS.push({
     };
     const reveal = () => [...q(".devis__head").children, ...steps[step - 1].children, q(".devis__foot")];
 
-    function open(projet, src) {
+    function open(projet, src, detail) {
+      config = detail || "";             // configuration composée dans le configurateur 3D
       const chosen = preselect(projet);
       if (isOpen) return;
       isOpen = true;

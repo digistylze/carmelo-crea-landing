@@ -1,0 +1,77 @@
+/* Une nuit, trois phases · Scroll Animation #25 (Background Shift) : couches crépuscule / nuit / aube qui glissent l'une sur l'autre */
+#s-nuit { position: relative; color: var(--mist); background: #120d0b; overflow-x: clip; }
+#s-nuit .nuit-anchor { position: absolute; top: 0; left: 0; width: 1px; height: 1px; }
+#s-nuit .nuit__pin { position: relative; overflow: hidden; }
+#s-nuit .nuit__layers { position: absolute; inset: 0; }
+#s-nuit .nuit__layer { position: absolute; inset: 0; will-change: transform; }
+#s-nuit .nuit__layer--0 { background: radial-gradient(90% 80% at 80% 30%, #5a3220 0%, #2a1912 55%, #140e0c 100%); }
+#s-nuit .nuit__layer--1 { background: radial-gradient(90% 80% at 80% 30%, #1a2347 0%, #0d1226 55%, #07090f 100%); }
+#s-nuit .nuit__layer--2 { background: radial-gradient(90% 80% at 80% 30%, #9a6a63 0%, #5a3a49 50%, #241a26 100%); }
+#s-nuit .nuit__grid { position: relative; display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: 48px clamp(40px, 6vw, 110px); align-items: center; }
+#s-nuit .nuit__text .eyebrow { margin-bottom: 18px; }
+#s-nuit h2 { font-size: clamp(36px, 3.6vw, 60px); color: var(--pearl); max-width: 13em; }
+#s-nuit .nuit__lead { margin-top: 16px; max-width: 46ch; font-size: clamp(16px, 1vw, 18px); color: rgba(243, 238, 230, .78); }
+
+/* étapes + phase courante (les trois phases empilées dans la même case : la hauteur ne saute pas) */
+#s-nuit .nuit__steps { list-style: none; display: flex; gap: 6px; margin: 34px 0 0; padding: 0; }
+#s-nuit .nuit__steps li { flex: 1; padding-top: 12px; border-top: 2px solid rgba(243, 238, 230, .22); font-size: 12px; font-weight: 600; letter-spacing: .16em; text-transform: uppercase; color: rgba(243, 238, 230, .5); transition: border-color .5s var(--ease), color .5s var(--ease); }
+#s-nuit .nuit__steps li.is-on { border-color: var(--cembro); color: var(--pearl); }
+#s-nuit .nuit__phases { display: grid; margin-top: 22px; }
+#s-nuit .nuit__ph { grid-area: 1 / 1; }
+#s-nuit .nuit__range { font-size: 13px; font-weight: 600; letter-spacing: .14em; color: var(--cembro); font-variant-numeric: tabular-nums; }
+#s-nuit .nuit__ph h3 { margin: 8px 0 10px; font-size: clamp(28px, 2.4vw, 40px); color: var(--pearl); }
+#s-nuit .nuit__ph p:last-child { max-width: 44ch; color: rgba(243, 238, 230, .82); }
+#s-nuit .nuit__note { margin-top: 20px; font-size: 14px; color: rgba(243, 238, 230, .55); }
+
+/* le petit écran */
+#s-nuit .nuit__device { display: flex; flex-direction: column; align-items: center; }
+#s-nuit .nuit__screen {
+  width: min(100%, 400px); aspect-ratio: 1 / 1; padding: clamp(24px, 2.4vw, 36px);
+  display: flex; flex-direction: column; background: linear-gradient(160deg, #15181e, #0b0c10);
+  box-shadow: inset 0 0 0 1px rgba(243, 238, 230, .12), 0 40px 80px -30px rgba(0, 0, 0, .7), 0 0 0 10px #1a1c21, 0 0 0 11px rgba(243, 238, 230, .08);
+}
+#s-nuit .nuit__now { font-size: 12.5px; font-weight: 600; letter-spacing: .22em; text-transform: uppercase; color: var(--cembro); }
+#s-nuit .nuit__time { margin-top: auto; font-family: var(--f-display); font-weight: 500; font-size: clamp(76px, 7vw, 116px); line-height: .9; color: var(--pearl); font-variant-numeric: lining-nums tabular-nums; }
+#s-nuit .nuit__icons { list-style: none; display: flex; gap: 18px; margin: 18px 0 0; padding: 0; }
+#s-nuit .nuit__icons li { display: flex; align-items: center; gap: 7px; font-size: 12px; font-weight: 600; letter-spacing: .08em; color: rgba(243, 238, 230, .32); transition: color .5s var(--ease); }
+#s-nuit .nuit__icons svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+#s-nuit .nuit__icons li.is-on { color: var(--pearl); }
+#s-nuit .nuit__icons li.is-on svg { color: var(--cembro); }
+#s-nuit .nuit__set { display: flex; align-items: center; gap: 10px; margin-top: auto; padding-top: 18px; border-top: 1px solid rgba(243, 238, 230, .14); }
+#s-nuit .nuit__set-label { margin-right: auto; font-size: 12.5px; font-weight: 600; letter-spacing: .2em; text-transform: uppercase; color: rgba(243, 238, 230, .65); }
+#s-nuit .nuit__wake { min-width: 3.4em; text-align: center; font-family: var(--f-display); font-weight: 500; font-size: 30px; line-height: 1; color: var(--pearl); font-variant-numeric: lining-nums tabular-nums; }
+#s-nuit .nuit__adj { display: grid; place-items: center; width: 44px; height: 44px; padding: 0; border: 0; cursor: pointer; background: transparent; color: var(--pearl); box-shadow: inset 0 0 0 1px rgba(243, 238, 230, .35); transition: background .3s var(--ease), color .3s var(--ease); }
+#s-nuit .nuit__adj svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 1.6; }
+#s-nuit .nuit__adj:hover { background: var(--pearl); color: var(--night); }
+#s-nuit .nuit__cap { margin-top: 26px; font-size: 13px; letter-spacing: .06em; color: rgba(243, 238, 230, .5); }
+
+/* desktop : scène épinglée le temps de la nuit */
+@media (min-width: 1000px) {
+  #s-nuit .nuit__pin { height: 100vh; height: 100svh; min-height: 640px; display: flex; align-items: center; }
+  #s-nuit .nuit__grid { padding-top: 70px; }
+  #s-nuit .nuit__ph { visibility: hidden; }
+  #s-nuit .nuit__ph.is-on { visibility: visible; }
+}
+@media (min-width: 1000px) and (max-height: 760px) {
+  #s-nuit .nuit__steps { margin-top: 22px; }
+  #s-nuit .nuit__screen { width: min(100%, 340px); }
+}
+/* mobile et tablette : pas d'épinglage, les trois phases l'une sous l'autre, le fond prend la couleur de la phase à l'écran */
+@media (max-width: 999px) {
+  #s-nuit .nuit__pin { padding: 76px 0 72px; }
+  #s-nuit .nuit__grid { grid-template-columns: minmax(0, 1fr); gap: 0; }
+  /* l'écran se glisse entre l'introduction et les phases */
+  #s-nuit .nuit__text { display: contents; }
+  #s-nuit .nuit__device { order: 2; margin: 40px 0 44px; }
+  #s-nuit .nuit__phases { order: 3; gap: 34px; margin: 0; }
+  #s-nuit .nuit__note { order: 4; }
+  #s-nuit .nuit__steps { display: none; }
+  #s-nuit .nuit__ph { grid-area: auto; }
+}
+@media (max-width: 768px) {
+  #s-nuit .nuit__text { text-align: center; }
+  #s-nuit h2, #s-nuit .nuit__lead, #s-nuit .nuit__ph p:last-child { margin-left: auto; margin-right: auto; }
+  #s-nuit .nuit__screen { width: min(100%, 330px); }
+  #s-nuit .nuit__time { font-size: 84px; }
+  #s-nuit .nuit__icons { gap: 12px; }
+}

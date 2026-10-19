@@ -65,6 +65,34 @@ km = np.clip(knot_mask * 1.1, 0, 1)[..., None] * .75
 rgb2 = rgb2 * (1 - km) + np.array([92, 90, 88], np.float32) * km
 Image.fromarray(np.clip(rgb2, 0, 255).astype(np.uint8)).save(DST / "tex-bois-gris.webp", "WEBP", quality=86, method=6)
 
+# parquet en cirmolo (configurateur) : lames de 128 px (≈ 14 cm) découpées dans l'arolle huilé, longueurs décalées, joints sombres
+prng = np.random.default_rng(11)
+cem = np.clip(rgb, 0, 255)
+par = np.zeros_like(cem)
+seam = np.ones((N, N), np.float32)
+PW = 128
+for c in range(N // PW):
+    y0 = int(prng.uniform(0, N)); end = y0 + N            # une colonne = un tour complet, raccordable
+    while y0 < end:
+        L = min(int(prng.uniform(380, 860)), end - y0)
+        ys = np.arange(y0, y0 + L) % N
+        src = np.roll(np.roll(cem, int(prng.uniform(0, N)), 0), int(prng.uniform(0, N)), 1)
+        tone = prng.uniform(.88, 1.08)
+        par[ys, c * PW:(c + 1) * PW] = src[ys, c * PW:(c + 1) * PW] * tone
+        seam[ys[:2], c * PW:(c + 1) * PW] = .55
+        y0 += L
+    seam[:, c * PW:c * PW + 2] = .55
+par = par * seam[..., None]
+Image.fromarray(np.clip(par, 0, 255).astype(np.uint8)).save(DST / "tex-parquet.webp", "WEBP", quality=84, method=6)
+
+# litho-peinture (configurateur) : enduit minéral clair, nuages doux, paillettes de cristal et de métal
+M = 512
+lit = .78 + .1 * (field((M, M), 2.4, prng) - .5) + .05 * (field((M, M), 1.4, prng) - .5)
+base = np.stack([lit * 232, lit * 226, lit * 218], -1)
+fl = prng.random((M, M)) > .9965
+base[fl] = prng.choice([[255, 250, 240], [235, 214, 170], [210, 222, 236]], size=fl.sum())
+Image.fromarray(np.clip(base, 0, 255).astype(np.uint8)).save(DST / "tex-litho.webp", "WEBP", quality=88, method=6)
+
 # normales : relief faible (bois huilé, poncé), fibres un peu creusées, nœuds légèrement bombés
 h = grain * .6 + knot_mask * .5
 gx = (np.roll(h, -1, 1) - np.roll(h, 1, 1)) * 2.2
@@ -72,5 +100,5 @@ gy = (np.roll(h, -1, 0) - np.roll(h, 1, 0)) * 2.2
 nz = np.ones_like(h)
 n = np.stack([-gx, gy, nz], -1); n /= np.linalg.norm(n, axis=-1, keepdims=True)
 Image.fromarray(((n * .5 + .5) * 255).astype(np.uint8)).save(DST / "tex-cembro-n.webp", "WEBP", quality=88, method=6)
-for k in ("tex-cembro", "tex-bois-gris", "tex-cembro-n"):
+for k in ("tex-cembro", "tex-bois-gris", "tex-cembro-n", "tex-parquet", "tex-litho"):
     print(k, round((DST / f"{k}.webp").stat().st_size / 1024), "KB")

@@ -1,0 +1,50 @@
+<!-- Configurateur 3D (même moteur que le hero, 3D Animation #11) : le lit du hero, cloné, dans une chambre. On choisit le niveau
+     d'intervention (garder son lit, tête de lit, espace nuit complet) et les applications de la pièce décrites par Carmelo Crea,
+     on lance une nuit en accéléré, puis on envoie la configuration dans le formulaire. -->
+<section id="s-config" class="on-dark" aria-labelledby="cfg-title">
+  <span id="configurateur" class="cfg-anchor"></span>
+  <div class="cfg">
+    <div class="cfg__view">
+      <canvas class="cfg__canvas" role="img" aria-label="Visualisation 3D de la chambre configurée"></canvas>
+      <img class="cfg__fallback" data-img="hero" alt="" width="1920" height="1080">
+      <p class="cfg__phase" aria-hidden="true"><span class="cfg__clock">22:15</span><span class="cfg__phase-name">Endormissement</span></p>
+      <p class="cfg__hint" aria-hidden="true"><svg viewBox="0 0 64 30" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M11 10h42M17 4l-6 6 6 6M47 4l6 6-6 6"/><path d="M12 22c10 5.5 30 5.5 40 0"/></svg>Glissez pour tourner autour</p>
+    </div>
+
+    <div class="cfg__panel">
+      <p class="eyebrow">Configurateur</p>
+      <h2 id="cfg-title">Composez votre espace nuit.</h2>
+      <p class="cfg__lead">Commencez sans toucher à votre lit, ou allez jusqu'au ciel de lit étoilé. Chaque application peut aussi s'ajouter plus tard.</p>
+
+      <fieldset class="cfg__group">
+        <legend class="cfg__label"><span>1</span> Le lit</legend>
+        <div class="cfg__seg">
+          <label><input type="radio" name="cfg-lit" value="0" checked><span>Garder mon lit</span></label>
+          <label><input type="radio" name="cfg-lit" value="1"><span>Tête de lit</span></label>
+          <label><input type="radio" name="cfg-lit" value="2"><span>Espace nuit complet</span></label>
+        </div>
+        <p class="cfg__note" aria-live="polite">L'investissement le plus léger : nous transformons la pièce, votre lit reste en place.</p>
+      </fieldset>
+
+      <fieldset class="cfg__group">
+        <legend class="cfg__label"><span>2</span> La pièce</legend>
+        <ul class="cfg__apps">
+          <li><label><input type="checkbox" name="cfg-app" value="parquet" checked><span class="cfg__box" aria-hidden="true"></span><span class="cfg__txt"><strong>Parquet en cirmolo</strong><em>Le pin cembro (cirmolo en italien) posé au sol.</em></span></label></li>
+          <li><label><input type="checkbox" name="cfg-app" value="mur" checked><span class="cfg__box" aria-hidden="true"></span><span class="cfg__txt"><strong>Mur en litho-peinture</strong><em>Un enduit maison aux cristaux et aux métaux, qui rend la pièce plus lumineuse.</em></span></label></li>
+          <li><label><input type="checkbox" name="cfg-app" value="lumiere" checked><span class="cfg__box" aria-hidden="true"></span><span class="cfg__txt"><strong>Éclairage bio-adapté</strong><em>Une lumière qui suit l'heure et fait vibrer l'enduit.</em></span></label></li>
+          <li><label><input type="checkbox" name="cfg-app" value="senteurs" checked><span class="cfg__box" aria-hidden="true"></span><span class="cfg__txt"><strong>Diffuseur de senteurs</strong><em>Il se déclenche au moment voulu de la nuit.</em></span></label></li>
+          <li><label><input type="checkbox" name="cfg-app" value="son" checked><span class="cfg__box" aria-hidden="true"></span><span class="cfg__txt"><strong>Son Sonos</strong><em>Des ambiances pour s'endormir, et pour se réveiller.</em></span></label></li>
+          <li><label><input type="checkbox" name="cfg-app" value="ecran" checked><span class="cfg__box" aria-hidden="true"></span><span class="cfg__txt"><strong>Écran de réveil</strong><em>Vous réglez l'heure de réveil, l'éclairage et le son suivent.</em></span></label></li>
+        </ul>
+      </fieldset>
+
+      <div class="cfg__sum">
+        <p class="cfg__count" aria-live="polite"></p>
+        <div class="cfg__actions">
+          <button class="btn" type="button" data-cfg-send>Recevoir l'étude de cette configuration</button>
+          <button class="cfg__play" type="button"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M5 3.5v13l11-6.5z"/></svg><span>Voir une nuit en accéléré</span></button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

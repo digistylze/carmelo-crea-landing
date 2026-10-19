@@ -1,0 +1,54 @@
+<!-- Scroll Animation #25 (Background Shift) : trois couches de couleur (crépuscule, nuit, aube) glissent l'une sur l'autre au
+     défilement ; à droite, le petit écran de réveil (heure réglable) qui pilote la pièce, à gauche la phase en cours. -->
+<section id="s-nuit" class="on-dark" aria-labelledby="nuit-title">
+  <span id="nuit" class="nuit-anchor"></span>
+  <div class="nuit__pin">
+    <div class="nuit__layers" aria-hidden="true"><span class="nuit__layer nuit__layer--0"></span><span class="nuit__layer nuit__layer--1"></span><span class="nuit__layer nuit__layer--2"></span></div>
+    <div class="wrap nuit__grid">
+      <div class="nuit__text">
+        <p class="eyebrow">Une nuit, trois phases</p>
+        <h2 id="nuit-title">Vous réglez l'heure du réveil, la pièce s'occupe du reste.</h2>
+        <p class="nuit__lead">Un petit écran pilote la lumière, l'enduit, les senteurs et le son, avec une domotique simple conçue dans notre bureau d'études. L'objectif premier : favoriser le sommeil profond.</p>
+
+        <ol class="nuit__steps" aria-hidden="true"><li class="is-on">Endormissement</li><li>Sommeil</li><li>Réveil</li></ol>
+        <div class="nuit__phases">
+          <article class="nuit__ph is-on">
+            <p class="nuit__range" data-from="-525" data-to="-495"></p>
+            <h3>Endormissement</h3>
+            <p>La lumière baisse et se réchauffe, l'enduit garde un éclat doux. Une senteur apaisante se diffuse, une ambiance sonore accompagne l'endormissement puis s'efface.</p>
+          </article>
+          <article class="nuit__ph">
+            <p class="nuit__range" data-from="-495" data-to="-30"></p>
+            <h3>Sommeil profond</h3>
+            <p>Obscurité et silence. Rien ne se déclenche : la pièce protège le sommeil.</p>
+          </article>
+          <article class="nuit__ph">
+            <p class="nuit__range" data-from="-30" data-to="0"></p>
+            <h3>Réveil</h3>
+            <p>Une lumière d'aube monte peu à peu sur le mur, une senteur plus tonique se diffuse au moment choisi, le son revient doucement.</p>
+          </article>
+        </div>
+        <p class="nuit__note">Exemple de programme : les horaires et les ambiances se règlent avec vous.</p>
+      </div>
+
+      <div class="nuit__device">
+        <div class="nuit__screen">
+          <p class="nuit__now" aria-hidden="true">Endormissement</p>
+          <p class="nuit__time" aria-hidden="true">22:15</p>
+          <ul class="nuit__icons" aria-hidden="true">
+            <li data-k="lumiere"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2.6M12 18.9v2.6M2.5 12h2.6M18.9 12h2.6M5.3 5.3l1.8 1.8M16.9 16.9l1.8 1.8M5.3 18.7l1.8-1.8M16.9 7.1l1.8-1.8"/></svg>Lumière</li>
+            <li data-k="senteur"><svg viewBox="0 0 24 24"><path d="M8 21c-2-2.5-2-5 0-7.5s2-5 0-7.5M13 21c-2-2.5-2-5 0-7.5s2-5 0-7.5M18 21c-2-2.5-2-5 0-7.5s2-5 0-7.5"/></svg>Senteur</li>
+            <li data-k="son"><svg viewBox="0 0 24 24"><path d="M4 9.5h3.5L12 5.5v13l-4.5-4H4z"/><path d="M15.5 9a4.2 4.2 0 0 1 0 6M18.2 6.4a8 8 0 0 1 0 11.2"/></svg>Son</li>
+          </ul>
+          <div class="nuit__set">
+            <span class="nuit__set-label" id="nuit-wake-label">Réveil</span>
+            <button class="nuit__adj" type="button" data-step="-15" aria-label="Réveil 15 minutes plus tôt"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4 10h12"/></svg></button>
+            <output class="nuit__wake" aria-labelledby="nuit-wake-label" aria-live="polite">07:00</output>
+            <button class="nuit__adj" type="button" data-step="15" aria-label="Réveil 15 minutes plus tard"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4 10h12M10 4v12"/></svg></button>
+          </div>
+        </div>
+        <p class="nuit__cap">L'écran de réveil, au mur à côté du lit.</p>
+      </div>
+    </div>
+  </div>
+</section>

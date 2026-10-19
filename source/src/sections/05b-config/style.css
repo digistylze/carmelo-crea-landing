@@ -1,0 +1,96 @@
+/* Configurateur 3D : la chambre à gauche (collée pendant la lecture du panneau), les choix à droite */
+#s-config { position: relative; background: var(--night); color: var(--mist); }
+#s-config .cfg-anchor { position: absolute; top: 0; left: 0; width: 1px; height: 1px; }
+#s-config .cfg { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); }
+#s-config .cfg__view { position: sticky; top: 0; height: 100vh; height: 100svh; overflow: hidden; background: #0b0d11; }
+#s-config .cfg__canvas { display: block; width: 100%; height: 100%; touch-action: pan-y; cursor: grab; }
+#s-config.is-grabbing .cfg__canvas { cursor: grabbing; }
+#s-config .cfg__fallback { display: none; position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 80% 50%; }
+#s-config.no-gl .cfg__canvas { display: none; }
+#s-config.no-gl .cfg__fallback { display: block; }
+#s-config.no-gl .cfg__play, #s-config.no-gl .cfg__hint { display: none; }
+
+/* horloge de la nuit en accéléré, en haut de la vue */
+#s-config .cfg__phase {
+  position: absolute; left: 28px; top: 92px; display: flex; flex-direction: column; gap: 6px; margin: 0;
+  opacity: 0; transform: translateY(-8px); transition: opacity .5s var(--ease), transform .5s var(--ease); pointer-events: none;
+}
+#s-config.is-playing .cfg__phase { opacity: 1; transform: none; }
+#s-config .cfg__clock { font-family: var(--f-display); font-weight: 500; font-size: clamp(44px, 4.4vw, 72px); line-height: 1; color: var(--pearl); font-variant-numeric: lining-nums tabular-nums; }
+#s-config .cfg__phase-name { font-size: 12.5px; font-weight: 600; letter-spacing: .22em; text-transform: uppercase; color: var(--cembro); }
+#s-config .cfg__hint {
+  position: absolute; left: 50%; bottom: 24px; display: flex; align-items: center; gap: 12px; margin: 0; transform: translateX(-50%);
+  font-size: 12px; font-weight: 600; letter-spacing: .16em; text-transform: uppercase; color: rgba(243, 238, 230, .7); white-space: nowrap;
+  transition: opacity .6s var(--ease); pointer-events: none;
+}
+#s-config .cfg__hint svg { width: 46px; height: 22px; color: var(--pearl); }
+#s-config.is-used .cfg__hint { opacity: 0; }
+
+/* panneau */
+#s-config .cfg__panel { padding: clamp(96px, 11vh, 132px) var(--gutter) clamp(64px, 8vh, 96px) clamp(32px, 4vw, 64px); }
+#s-config .cfg__panel .eyebrow { margin-bottom: 18px; }
+#s-config h2 { font-size: clamp(38px, 3.6vw, 60px); color: var(--pearl); max-width: 10em; }
+#s-config .cfg__lead { margin-top: 16px; max-width: 38ch; font-size: clamp(16px, 1vw, 18px); }
+#s-config .cfg__group { margin: 34px 0 0; padding: 0; border: 0; min-width: 0; }
+#s-config .cfg__label { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; padding: 0; font-size: 12.5px; font-weight: 600; letter-spacing: .2em; text-transform: uppercase; color: var(--pearl); }
+#s-config .cfg__label span { display: grid; place-items: center; width: 26px; height: 26px; box-shadow: inset 0 0 0 1px var(--cembro); color: var(--cembro); letter-spacing: 0; }
+
+/* niveaux : boutons segmentés (radios natifs) */
+#s-config .cfg__seg { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); }
+#s-config .cfg__seg label { position: relative; display: block; cursor: pointer; }
+#s-config .cfg__seg label + label { margin-left: -1px; }
+#s-config .cfg__seg input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+#s-config .cfg__seg span {
+  display: flex; align-items: center; justify-content: center; min-height: 52px; height: 100%; padding: 8px 10px; text-align: center;
+  box-shadow: inset 0 0 0 1px var(--line-light); font-size: 13px; font-weight: 600; letter-spacing: .06em; line-height: 1.25; color: var(--mist);
+  transition: background .35s var(--ease), color .35s var(--ease);
+}
+#s-config .cfg__seg label:hover span { color: var(--pearl); }
+#s-config .cfg__seg input:checked + span { background: var(--pearl); color: var(--night); box-shadow: none; }
+#s-config .cfg__seg input:focus-visible + span { outline: 2px solid var(--cembro); outline-offset: 2px; }
+#s-config .cfg__note { min-height: 3em; margin-top: 12px; font-size: 15px; line-height: 1.5; color: var(--mist); }
+
+/* applications : cases à cocher natives habillées */
+#s-config .cfg__apps { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--line-light); }
+#s-config .cfg__apps li { border-bottom: 1px solid var(--line-light); }
+#s-config .cfg__apps label { position: relative; display: grid; grid-template-columns: 22px minmax(0, 1fr); gap: 16px; align-items: start; padding: 14px 0; cursor: pointer; }
+#s-config .cfg__apps input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+#s-config .cfg__box { position: relative; width: 22px; height: 22px; margin-top: 1px; box-shadow: inset 0 0 0 1px rgba(243, 238, 230, .45); transition: background .3s var(--ease), box-shadow .3s var(--ease); }
+#s-config .cfg__box::after { content: ""; position: absolute; left: 7px; top: 3px; width: 6px; height: 11px; border: solid var(--night); border-width: 0 2px 2px 0; transform: rotate(45deg) scale(0); transition: transform .3s var(--ease); }
+#s-config .cfg__apps input:checked + .cfg__box { background: var(--cembro); box-shadow: none; }
+#s-config .cfg__apps input:checked + .cfg__box::after { transform: rotate(45deg) scale(1); }
+#s-config .cfg__apps input:focus-visible + .cfg__box { outline: 2px solid var(--cembro); outline-offset: 3px; }
+#s-config .cfg__txt strong { display: block; font-weight: 600; font-size: 16px; color: var(--pearl); }
+#s-config .cfg__txt em { display: block; margin-top: 2px; font-style: normal; font-size: 14.5px; line-height: 1.45; color: var(--mist); }
+#s-config .cfg__apps input:not(:checked) ~ .cfg__txt strong { color: var(--mist); }
+
+#s-config .cfg__sum { margin-top: 30px; }
+#s-config .cfg__count { font-size: 15px; color: var(--mist); }
+#s-config .cfg__count strong { font-family: var(--f-display); font-weight: 500; font-size: 30px; line-height: 1; color: var(--pearl); margin-right: 4px; }
+#s-config .cfg__actions { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 26px; margin-top: 18px; }
+#s-config .cfg__play {
+  display: inline-flex; align-items: center; gap: 12px; min-height: 48px; padding: 0; border: 0; background: none; cursor: pointer;
+  font-family: var(--f-body); font-weight: 600; font-size: 13px; letter-spacing: .14em; text-transform: uppercase; color: var(--pearl);
+}
+#s-config .cfg__play svg { width: 36px; height: 36px; padding: 10px; box-shadow: inset 0 0 0 1px rgba(243, 238, 230, .45); fill: currentColor; transition: background .3s var(--ease), color .3s var(--ease); }
+#s-config .cfg__play:hover svg, #s-config .cfg__play[aria-pressed="true"] svg { background: var(--pearl); color: var(--night); }
+#s-config .cfg__play:disabled { opacity: .5; cursor: default; }
+
+/* tablette et mobile : la chambre au-dessus, le panneau dessous, tout centré */
+@media (max-width: 999px) {
+  #s-config .cfg { grid-template-columns: minmax(0, 1fr); }
+  #s-config .cfg__view { position: relative; height: auto; aspect-ratio: 1 / 1; max-height: 74svh; }
+  #s-config .cfg__phase { left: 18px; top: auto; bottom: 16px; }   /* en haut, la barre de navigation le couvrait */
+  #s-config.is-playing .cfg__hint { opacity: 0; }
+  #s-config .cfg__panel { padding: 36px var(--gutter) 72px; }
+}
+@media (max-width: 768px) {
+  #s-config .cfg__panel { text-align: center; }
+  #s-config h2, #s-config .cfg__lead { margin-left: auto; margin-right: auto; }
+  #s-config .cfg__label { justify-content: center; }
+  #s-config .cfg__seg span { font-size: 12.5px; letter-spacing: .03em; }
+  #s-config .cfg__apps label { text-align: left; }
+  #s-config .cfg__actions { flex-direction: column; }
+  #s-config .cfg__actions .btn { width: 100%; }
+  #s-config .cfg__hint { font-size: 11.5px; bottom: 16px; }
+}

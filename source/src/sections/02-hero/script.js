@@ -74,7 +74,8 @@ SECTIONS.push({
     };
 
     // ------------------------------------------------------------------ WebGL
-    let renderer;
+    let renderer, resolveBed;
+    ctx.bed = new Promise(r => (resolveBed = r));   // le configurateur 3D clone ce lit (null sans WebGL)
     try {
       if (!THREE) throw new Error("three absent");
       renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true, powerPreference: "high-performance" });
@@ -82,6 +83,7 @@ SECTIONS.push({
     } catch (e) { renderer = null; }
     if (!renderer) {
       root.classList.add("no-gl");
+      resolveBed(null);
       setPct(100);
       revealHero(true);
       return;
@@ -222,7 +224,11 @@ SECTIONS.push({
     }
     const model = new THREE.Group();
     scene.add(model);
-    const add = (geo, mat, x = 0, y = 0, z = 0, parent = model) => {
+    // le lit est rangé en pièces (socle, literie, tour de tête, ciel de lit) que le configurateur affiche ou masque
+    const PARTS = { base: new THREE.Group(), bedding: new THREE.Group(), tower: new THREE.Group(), canopy: new THREE.Group() };
+    Object.values(PARTS).forEach(g => model.add(g));
+    let cur = model;
+    const add = (geo, mat, x = 0, y = 0, z = 0, parent = cur) => {
       const m = new THREE.Mesh(geo, mat); m.position.set(x, y, z); m.castShadow = m.receiveShadow = true; parent.add(m); return m;
     };
     const AX = new V3(1, 0, 0), AY = new V3(0, 1, 0), AZ = new V3(0, 0, 1);
@@ -243,12 +249,14 @@ SECTIONS.push({
       g.translate(0, 0, -(t - .008) / 2);
       return g;
     }
+    cur = PARTS.base;
     for (const s of [-1, 1]) {
       const g = notched(ZP - ZF, HB0, .07); g.rotateY(Math.PI / 2);
       add(grainUV(g, AZ, .9, 2.2), wood, s * (XB - .035), 0, (ZF + ZP) / 2);
     }
     add(grainUV(notched(2 * XB, HB0, .07), AX, .9, 2.2), wood, 0, 0, ZP + .035);
     add(new THREE.BoxGeometry(2 * XB - .14, .03, ZP - ZF), plinthMat, 0, .285, (ZF + ZP) / 2);
+    cur = PARTS.bedding;
     // matelas, oreillers (deux grands adossés à la tête de lit, deux plus petits devant)
     add(roundedBox(1.76, .26, 2.06, .05), sheetMat, 0, .43, .11);
     const pillow = (w, h, d) => {
@@ -293,6 +301,7 @@ SECTIONS.push({
       add(g, duvetMat).receiveShadow = false;   // l'ombre du matelas sur la chute crénelait le bord (aliasing de la carte d'ombre)
     })();
 
+    cur = PARTS.tower;
     // tour de tête : deux joues pleine hauteur, fond, bloc de tête dont le dessus fait tablette
     for (const s of [-1, 1]) add(plank(T, CB, ZF - ZB, AY), wood, s * (X - T / 2), CB / 2, (ZB + ZF) / 2);
     add(plank(2 * (X - T), CB, .04, AY), wood, 0, CB / 2, ZB + .02);
@@ -336,6 +345,7 @@ SECTIONS.push({
       bx += w + .003;
     }
 
+    cur = PARTS.canopy;
     // ciel de lit : caisson sur toute la longueur, plafond en retrait, suspendu par quatre tiges qui se perdent dans le noir
     const CH = TOP - CB, CZ = (ZB + ZE) / 2, CL = ZE - ZB, CEIL = CB + .21;
     for (const s of [-1, 1]) add(plank(T, CH, CL, AZ), wood, s * (X - T / 2), CB + CH / 2, CZ);
@@ -349,7 +359,7 @@ SECTIONS.push({
     })();
     const rodMat = new THREE.MeshStandardMaterial({ color: 0x2a2c31, roughness: .35, metalness: .7, transparent: true, alphaMap: fade });
     for (const x of [-.8, .8]) for (const z of [ZB + .3, ZE - .3]) add(new THREE.CylinderGeometry(.008, .008, 1.4, 6, 1, true), rodMat, x, TOP + .74, z).castShadow = false;
-    const led = new THREE.Group(); model.add(led);
+    const led = new THREE.Group(); PARTS.canopy.add(led);
     const L = { w: 2 * (X - T) - .05, d: CL - 2 * T - .05, y: CEIL - .012, z: CZ };
     for (const s of [-1, 1]) {
       const a = new THREE.Mesh(new THREE.BoxGeometry(L.w, .012, .02), ledMat); a.position.set(0, L.y, L.z + s * L.d / 2); led.add(a);
@@ -360,7 +370,7 @@ SECTIONS.push({
     const haloMat = new THREE.MeshBasicMaterial({ color: 0xffffff, transparent: true, opacity: .7, depthWrite: false, blending: THREE.AdditiveBlending, toneMapped: false, alphaMap: radial([[0, "#fff"], [.55, "#777"], [1, "#000"]]) });
     const halo = new THREE.Mesh(new THREE.PlaneGeometry(1.7, 2.3).rotateX(Math.PI / 2), haloMat);
     halo.position.set(0, CEIL - .015, CZ + .2);
-    model.add(halo);
+    PARTS.canopy.add(halo);
     // voilages accrochés sous le ciel de lit : un rideau plus dense du côté gauche, des voiles fronces aux angles
     const veil = (color, opacity) => new THREE.MeshStandardMaterial({ color, roughness: 1, envMapIntensity: .25, transparent: true, opacity, side: THREE.DoubleSide, depthWrite: false });
     const sheer = veil(0xf2ede6, .14), dense = veil(0x8e8983, .5);
@@ -384,7 +394,7 @@ SECTIONS.push({
         p.setXYZ(i, x + amp * Math.sin(u * folds * Math.PI * 2) * (1.25 - .25 * v), .46 + h / 2 + py, z0 + len / 2 - px);
       }
       shade(g);
-      const m = new THREE.Mesh(g, mat); m.renderOrder = 2; m.frustumCulled = false; m.userData.cloth = true; model.add(m);
+      const m = new THREE.Mesh(g, mat); m.renderOrder = 2; m.frustumCulled = false; m.userData.cloth = true; PARTS.canopy.add(m);
       const R = Float32Array.from(p.array), n = p.count, C = [];
       const link = (i, j) => C.push(i, j, Math.hypot(R[j * 3] - R[i * 3], R[j * 3 + 1] - R[i * 3 + 1], R[j * 3 + 2] - R[i * 3 + 2]));
       for (let r = 0; r < ny; r++) for (let c = 0; c < nx; c++) {
@@ -475,7 +485,8 @@ SECTIONS.push({
           gl_FragColor = vec4(vec3(1.0, .97, .9), a * vA); }`,
       transparent: true, depthWrite: false, blending: THREE.AdditiveBlending,
     });
-    model.add(new THREE.Points(starGeo, starMat));
+    PARTS.canopy.add(new THREE.Points(starGeo, starMat));
+    cur = model;
     const MODEL_W = 2.86, MODEL_H = 2.58, CENTER_Y = 1.24;
 
     // ------------------------------------------------------------------ sol : il se fond dans le fond de la page, ombre douce sous le lit
@@ -716,6 +727,8 @@ SECTIONS.push({
     addEventListener("resize", () => { clearTimeout(resize.t); resize.t = setTimeout(resize, 120); });
 
     manager.onLoad = () => {
+      resolveBed({ parts: PARTS, mats: { wood, led: ledMat, halo: haloMat, star: starMat }, plank, roundedBox, grainUV, AX, AY, AZ,
+        dims: { X, T, ZB, ZF, ZE, CB, TOP, SH, CEIL } });
       Object.assign(view, introRect());
       resize();
       setLight(0);
