@@ -79,12 +79,14 @@
 /* tablette et mobile : la chambre au-dessus, le panneau dessous, tout centré */
 @media (max-width: 999px) {
   #s-config .cfg { grid-template-columns: minmax(0, 1fr); }
-  #s-config .cfg__view { position: relative; height: auto; aspect-ratio: 1 / 1; max-height: 74svh; }
+  /* la chambre reste à l'écran pendant qu'on fait ses choix : collée sous la barre de navigation, le panneau glisse dessous */
+  #s-config .cfg__view { top: 76px; z-index: 2; height: 44vh; height: 44svh; min-height: 240px; box-shadow: 0 22px 26px -20px rgba(0, 0, 0, .85); }
   #s-config .cfg__phase { left: 18px; top: auto; bottom: 16px; }   /* en haut, la barre de navigation le couvrait */
   #s-config.is-playing .cfg__hint { opacity: 0; }
   #s-config .cfg__panel { padding: 36px var(--gutter) 72px; }
 }
 @media (max-width: 768px) {
+  #s-config .cfg__view { top: 64px; height: 42vh; height: 42svh; }
   #s-config .cfg__panel { text-align: center; }
   #s-config h2, #s-config .cfg__lead { margin-left: auto; margin-right: auto; }
   #s-config .cfg__label { justify-content: center; }
@@ -93,4 +95,14 @@
   #s-config .cfg__actions { flex-direction: column; }
   #s-config .cfg__actions .btn { width: 100%; }
   #s-config .cfg__hint { font-size: 11.5px; bottom: 16px; }
+}
+/* téléphone à l'horizontale : la chambre à gauche (toute la hauteur sous la barre), les choix à droite */
+@media (max-width: 999px) and (orientation: landscape) and (max-height: 560px) {
+  #s-config .cfg { grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); }
+  #s-config .cfg__view { top: 76px; height: calc(100vh - 76px); height: calc(100svh - 76px); min-height: 0; box-shadow: none; }
+  #s-config .cfg__panel { padding: 28px 20px 40px; text-align: left; }
+  #s-config h2, #s-config .cfg__lead { margin-left: 0; }
+  #s-config .cfg__label { justify-content: flex-start; }
+  #s-config .cfg__actions { flex-direction: row; }
+  #s-config .cfg__actions .btn { width: auto; }
 }

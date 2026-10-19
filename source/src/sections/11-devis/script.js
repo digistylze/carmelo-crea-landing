@@ -192,7 +192,7 @@ SECTIONS.push({
 
     // la pilule se cache sur le CTA final et le pied de page (le bouton y est déjà)
     if (fab) {
-      const hiders = [...document.querySelectorAll("#s-cta, #s-footer")];
+      const hiders = [...document.querySelectorAll("#s-config, #s-cta, #s-footer")];
       const on = new Set();
       hiders.forEach(h => new IntersectionObserver(([e]) => { e.isIntersecting ? on.add(h) : on.delete(h); fab.classList.toggle("is-away", on.size > 0); }, { threshold: .2 }).observe(h));
     }
