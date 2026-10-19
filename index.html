@@ -2119,18 +2119,95 @@ SECTIONS.push({
     // voilages accrochés sous le ciel de lit : un rideau plus dense du côté gauche, des voiles fronces aux angles
     const veil = (color, opacity) => new THREE.MeshStandardMaterial({ color, roughness: 1, envMapIntensity: .25, transparent: true, opacity, side: THREE.DoubleSide, depthWrite: false });
     const sheer = veil(0xf2ede6, .14), dense = veil(0x8e8983, .5);
-    function curtain(x, z0, len, folds, amp, mat) {
-      const h = CEIL - .46, g = new THREE.PlaneGeometry(len, h, folds * 10, 6), p = g.attributes.position;
-      for (let i = 0; i < p.count; i++) {
-        const u = p.getX(i) / len + .5, v = p.getY(i) / h + .5;     // le long de la tringle, du bas vers le haut
-        p.setZ(i, amp * Math.sin(u * folds * Math.PI * 2) * (1.25 - .25 * v));
-      }
+    // Physique des voilages : chaque rideau est une toile (intégration de Verlet, contraintes de distance) accrochée à sa
+    // tringle et simulée dans le repère du monde. Quand le lit tourne (tour de chargement, glisser, souris, défilement), la
+    // tringle bouge et le tissu suit avec retard, s'écarte dans les virages, se balance puis retombe ; un souffle le fait respirer.
+    const cloths = [];
+    function shade(g) {                                // ombrage des plis adouci : un voile, pas des lames (normale du rideau = +x)
       g.computeVertexNormals();
-      const n = g.attributes.normal;                  // ombrage des plis adouci : un voile, pas des lames
-      for (let i = 0; i < n.count; i++) n.setXYZ(i, n.getX(i) * .35, n.getY(i) * .35, n.getZ(i) * .35 + .65);
-      g.normalizeNormals();
-      g.rotateY(Math.PI / 2);
-      const m = new THREE.Mesh(g, mat); m.position.set(x, .46 + h / 2, z0 + len / 2); m.renderOrder = 2; model.add(m);
+      const a = g.attributes.normal.array;
+      for (let i = 0; i < a.length; i += 3) {
+        const x = a[i] * .35 + .65, y = a[i + 1] * .35, z = a[i + 2] * .35, l = Math.hypot(x, y, z);
+        a[i] = x / l; a[i + 1] = y / l; a[i + 2] = z / l;
+      }
+    }
+    function curtain(x, z0, len, folds, amp, mat) {
+      const h = CEIL - .46, nx = folds * 6 + 1, ny = 13;
+      const g = new THREE.PlaneGeometry(len, h, nx - 1, ny - 1), p = g.attributes.position;
+      for (let i = 0; i < p.count; i++) {              // forme de repos (plis) dans le repère du lit ; rangée 0 = la tringle
+        const px = p.getX(i), py = p.getY(i), u = px / len + .5, v = py / h + .5;
+        p.setXYZ(i, x + amp * Math.sin(u * folds * Math.PI * 2) * (1.25 - .25 * v), .46 + h / 2 + py, z0 + len / 2 - px);
+      }
+      shade(g);
+      const m = new THREE.Mesh(g, mat); m.renderOrder = 2; m.frustumCulled = false; m.userData.cloth = true; model.add(m);
+      const R = Float32Array.from(p.array), n = p.count, C = [];
+      const link = (i, j) => C.push(i, j, Math.hypot(R[j * 3] - R[i * 3], R[j * 3 + 1] - R[i * 3 + 1], R[j * 3 + 2] - R[i * 3 + 2]));
+      for (let r = 0; r < ny; r++) for (let c = 0; c < nx; c++) {
+        const i = r * nx + c;
+        if (c + 1 < nx) link(i, i + 1);
+        if (r + 1 < ny) link(i, i + nx);
+        if (c + 1 < nx && r + 1 < ny) { link(i, i + nx + 1); link(i + 1, i + nx); }
+        if (c + 2 < nx) link(i, i + 2);                 // raideur : les plis gardent leur forme
+        if (r + 2 < ny) link(i, i + 2 * nx);
+      }
+      cloths.push({ g, n, nx, ny, R, C: Float32Array.from(C), P: new Float32Array(n * 3), O: new Float32Array(n * 3),
+        pin: new Float32Array(nx * 3), pin0: new Float32Array(nx * 3), side: Math.sign(x), air: mat === sheer ? .982 : .99, ph: rnd() * 6.28, init: false });
+    }
+    const MW = new THREE.Matrix4(), MI = new THREE.Matrix4(), cv = new V3(), NRM = new V3(), H2 = 1 / 3600;
+    let clothAcc = 0;
+    function updateCloth(dt, time, reset) {
+      model.updateMatrixWorld();
+      MW.copy(model.matrixWorld); MI.copy(MW).invert();
+      NRM.set(MW.elements[0], MW.elements[1], MW.elements[2]).normalize();   // axe x du lit : la normale des voilages
+      clothAcc = Math.min(clothAcc + dt, 4 / 60);
+      const steps = Math.floor(clothAcc * 60 + 1e-6); clothAcc -= steps / 60;
+      for (const c of cloths) {
+        const { n, nx, ny, R, C, P, O, pin, pin0 } = c;
+        pin0.set(pin);
+        for (let k = 0; k < nx; k++) cv.fromArray(R, k * 3).applyMatrix4(MW).toArray(pin, k * 3);
+        if (!c.init || reset) {                        // premier rendu, ou retour après une pause : le tissu repart au repos
+          for (let i = 0; i < n; i++) { cv.fromArray(R, i * 3).applyMatrix4(MW); cv.toArray(P, i * 3); cv.toArray(O, i * 3); }
+          pin0.set(pin); c.init = true;
+        }
+        for (let s = 0; s < steps; s++) {
+          const t = (s + 1) / steps;                   // la tringle avance par petits pas entre deux images
+          for (let k = 0; k < nx * 3; k++) P[k] = pin0[k] + (pin[k] - pin0[k]) * t;
+          for (let i = nx; i < n; i++) {
+            const j = i * 3, r = Math.floor(i / nx) / (ny - 1);
+            const w = .3 * r * Math.sin(time * .9 + c.ph + r * 2.2 + (i % nx) * .07) * H2;   // souffle, plus marqué en bas
+            let vx = P[j] - O[j], vy = P[j + 1] - O[j + 1], vz = P[j + 2] - O[j + 2];
+            // résistance de l'air : linéaire + quadratique (un voile lancé vite traîne derrière au lieu de s'envoler), vitesse plafonnée
+            const sp = Math.hypot(vx, vy, vz), k = c.air / (1 + 4 * sp) * (sp > .04 ? .04 / sp : 1);
+            vx *= k; vy *= k; vz *= k;
+            O[j] = P[j]; O[j + 1] = P[j + 1]; O[j + 2] = P[j + 2];
+            P[j] += vx + NRM.x * w; P[j + 1] += vy - 9.8 * H2 + NRM.y * w; P[j + 2] += vz + NRM.z * w;
+          }
+          for (let it = 0; it < 3; it++) for (let q = 0; q < C.length; q += 3) {
+            const a = C[q], b = C[q + 1], wa = a < nx ? 0 : 1, wb = b < nx ? 0 : 1;
+            if (!(wa + wb)) continue;
+            const i = a * 3, j = b * 3, dx = P[j] - P[i], dy = P[j + 1] - P[i + 1], dz = P[j + 2] - P[i + 2];
+            const d = Math.hypot(dx, dy, dz) || 1e-6, f = (d - C[q + 2]) / d / (wa + wb);
+            P[i] += dx * f * wa; P[i + 1] += dy * f * wa; P[i + 2] += dz * f * wa;
+            P[j] -= dx * f * wb; P[j + 1] -= dy * f * wb; P[j + 2] -= dz * f * wb;
+          }
+          // le tissu ne traverse ni le matelas ni les joues de la tour (tests dans le repère du lit)
+          for (let i = nx; i < n; i++) {
+            cv.fromArray(P, i * 3).applyMatrix4(MI);
+            let hit = false;
+            if (cv.y < .62 && Math.abs(cv.x) < .905) { cv.x = c.side * .905; hit = true; }
+            if (cv.z < ZF + .012 && Math.abs(cv.x) > X - T - .01) { cv.z = ZF + .012; hit = true; }
+            if (cv.y > CB - .03) {                     // le haut du voile reste dans le caisson : il pivote sous le bord du ciel de lit
+              const ax = Math.abs(cv.x), cx = Math.min(.965, Math.max(.915, ax));
+              if (cx !== ax) { cv.x = c.side * cx; hit = true; }
+            }
+            if (hit) cv.applyMatrix4(MW).toArray(P, i * 3);
+          }
+        }
+        const a = c.g.attributes.position.array;
+        for (let i = 0; i < n; i++) cv.fromArray(P, i * 3).applyMatrix4(MI).toArray(a, i * 3);
+        c.g.attributes.position.needsUpdate = true;
+        shade(c.g); c.g.attributes.normal.needsUpdate = true;
+      }
     }
     const XC = X - T + .025;
     curtain(-XC, ZF + .02, 1.3, 15, .011, dense);
@@ -2269,7 +2346,7 @@ SECTIONS.push({
     let visible = true, t0 = performance.now(), idleT0 = 0;
     function render() {
       if (!visible) return;
-      const now = performance.now(), dt = Math.min(.05, (now - (render.last || now)) / 1000);
+      const now = performance.now(), gap = now - (render.last || now), dt = Math.min(.05, gap / 1000);
       render.last = now;
       starMat.uniforms.uTime.value = (now - t0) / 1000;
       if (!ctx.reduced) updateSmoke(dt, now);
@@ -2283,6 +2360,7 @@ SECTIONS.push({
       }
       model.rotation.y = BASE_YAW + state.yaw + state.sway + state.mx * .14 + state.scroll * .6 + drag.yaw;
       model.rotation.x = state.my * .02 + drag.pitch;
+      if (!ctx.reduced) updateCloth(dt, now / 1000, gap > 250);   // après une pause (hero hors écran) les voilages repartent au repos
       renderer.render(scene, camera);
     }
 
@@ -2334,7 +2412,8 @@ SECTIONS.push({
     // glisser : le lit tourne (avec élan) et s'incline un peu ; un clic sur le lit passe à la lumière du canal suivant.
     // Sur écran tactile, seul le geste horizontal tourne le lit : le geste vertical fait défiler la page (touch-action: pan-y).
     const ray = new THREE.Raycaster(), ndc = new THREE.Vector2();
-    const meshes = []; model.traverse(o => { if (o.isMesh && o !== blob && o !== halo) meshes.push(o); });
+    // les voilages laissent passer le clic : on attrape le lit à travers eux
+    const meshes = []; model.traverse(o => { if (o.isMesh && o !== blob && o !== halo && !o.userData.cloth) meshes.push(o); });
     const onBed = e => {
       const r = canvas.getBoundingClientRect();
       ndc.set((e.clientX - r.left) / r.width * 2 - 1, -(e.clientY - r.top) / r.height * 2 + 1);
@@ -2377,6 +2456,7 @@ SECTIONS.push({
         if (!drag.on) return;
         drag.on = false;
         root.classList.remove("is-grabbing");
+        drag.v = Math.max(-.06, Math.min(.06, drag.v));   // élan après lâcher plafonné : le lit tourne, il ne s'emballe pas
         if (drag.moved < 6) {                           // simple clic : canal suivant
           const t = ((performance.now() - idleT0) / 1000 / 7.5) % 4;
           idleT0 = performance.now() - (Math.floor(t) + 1) * 7.5 * 1000 + 1;
