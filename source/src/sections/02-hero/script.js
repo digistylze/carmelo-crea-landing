@@ -1,7 +1,7 @@
 /* Hero · 3D Animation #11 (objet 3D en studio, caméra qui passe d'une vue à l'autre) + compteur à rouleaux (Hero #8), même
-   moteur que la charpente de Constantin Besomi. Le lit « L'Éveil des sens » est modélisé ici : structure à baldaquin en pin
-   cembro (d'après l'esquisse du site), tête de lit capitonnée, matelas, couette en maille, oreillers, caisson d'aromathérapie,
-   plafond étoilé et bandeau lumineux. Préchargement : un tour complet ; le compteur va de 0 à 100 et la lumière passe par les
+   moteur que la charpente de Constantin Besomi. Le lit « L'Éveil des sens » est modélisé ici d'après les rendus de Carmelo Crea :
+   portique en pin cembro (tour de tête avec niche, tableau et tablette, ciel de lit en caisson suspendu, socle aux pieds
+   découpés), tête de lit capitonnée en deux panneaux, voilages, jeté de lit, caisson d'aromathérapie, plafond étoilé. Préchargement : un tour complet ; le compteur va de 0 à 100 et la lumière passe par les
    quatre canaux. À la fin du tour, la caméra cadre le lit à droite et le texte du hero se pose. QA : ?pre=<secondes>. */
 SECTIONS.push({
   id: "hero",
@@ -117,18 +117,18 @@ SECTIONS.push({
     })();
     scene.add(new THREE.HemisphereLight(0x9aa4ba, 0x16120e, .35));
     const key = new THREE.DirectionalLight(0xffe6c8, 2.3);
-    key.position.set(-3.6, 5.6, 4.6);
+    key.position.set(-3.4, 3.9, 6.4);
     key.target.position.set(0, .6, 0);
     key.castShadow = true;
     key.shadow.mapSize.set(1024, 1024);
-    Object.assign(key.shadow.camera, { left: -3, right: 3, top: 3.4, bottom: -2.2, near: 1, far: 16 });
+    Object.assign(key.shadow.camera, { left: -3.2, right: 3.2, top: 3.2, bottom: -3.2, near: 1, far: 18 });
     key.shadow.bias = -.0004; key.shadow.normalBias = .02; key.shadow.radius = 5; key.shadow.blurSamples = 14;
     scene.add(key, key.target);
     const rim = new THREE.DirectionalLight(0x9fb2ff, .7);
     rim.position.set(4, 3.5, -4.5);
     scene.add(rim);
     const glowA = new THREE.PointLight(0xffffff, 9, 0, 2), glowB = new THREE.PointLight(0xffffff, 9, 0, 2);
-    glowA.position.set(-.45, 2.05, -.4); glowB.position.set(.45, 2.05, .4);
+    glowA.position.set(0, 1.95, -1.07); glowB.position.set(0, 2.02, .25);   // dans la niche, sous le ciel de lit
 
     // ------------------------------------------------------------------ textures
     const manager = new THREE.LoadingManager();
@@ -157,7 +157,7 @@ SECTIONS.push({
       return t;
     }
     // capitonnage : coussins en losange, plis sur les diagonales, boutons aux sommets (un motif = un losange)
-    const tuftN = normalTex(256, (u, v) => Math.pow(Math.abs(Math.sin(Math.PI * (u + v)) * Math.sin(Math.PI * (u - v))), .55), 8, 4);
+    const tuftN = normalTex(256, (u, v) => Math.pow(Math.abs(Math.sin(Math.PI * (u + v)) * Math.sin(Math.PI * (u - v))), .55), 4, 2);
     // maille : côtes verticales et rangs décalés
     const knitN = normalTex(128, (u, v) => {
       const col = Math.floor(u * 16), r = Math.abs(Math.sin(Math.PI * u * 16));
@@ -177,8 +177,7 @@ SECTIONS.push({
     const headMat = fabric(0xcbc1b3, { normalMap: tuftN, normalScale: new THREE.Vector2(1.5, 1.5) });
     const sheetMat = fabric(0xeeeae3, { sheen: .6 });
     const pillowMat = fabric(0xf3f0ea, { sheen: .5 });
-    const duvetMat = fabric(0x8d857b, { normalMap: knitN, normalScale: new THREE.Vector2(.45, .45), sheenColor: new THREE.Color(0xd9d0c3) });
-    const foldMat = fabric(0xd9d2c6, { normalMap: knitN, normalScale: new THREE.Vector2(.6, .6) });
+    const duvetMat = fabric(0x77716a, { normalMap: knitN, normalScale: new THREE.Vector2(.7, .7), sheen: .35, sheenColor: new THREE.Color(0x8a8178), side: THREE.DoubleSide });
     const juteMat = fabric(0xa98c62, { normalMap: knitN, normalScale: new THREE.Vector2(1.2, 1.2), sheen: .3 });
     const buttonMat = new THREE.MeshStandardMaterial({ color: 0xb1a594, roughness: .35, metalness: .15 });
     const plinthMat = new THREE.MeshStandardMaterial({ color: 0x1b1916, roughness: .7 });
@@ -229,66 +228,163 @@ SECTIONS.push({
     const AX = new V3(1, 0, 0), AY = new V3(0, 1, 0), AZ = new V3(0, 0, 1);
     const plank = (w, h, d, axis) => grainUV(new THREE.BoxGeometry(w, h, d, 1, 1, 1), axis, .9, 2.2);
 
-    // socle en retrait, cadre de lit en pin cembro (côtés, pied), sommier caché par le matelas
-    add(new THREE.BoxGeometry(1.66, .08, 1.94), plinthMat, 0, .04, -.03);
-    for (const s of [-1, 1]) add(plank(.06, .3, 2.16, AZ), wood, s * .93, .23, -.03);
-    add(plank(1.92, .34, .06, AX), wood, 0, .25, 1.05);
-    add(plank(1.8, .03, 2.08, AZ), wood, 0, .345, -.03);
-    // matelas, couette (descend sur les côtés, retournée en haut), oreillers
-    add(roundedBox(1.78, .22, 2.0, .05), sheetMat, 0, .47, -.04);
-    const duvet = add(roundedBox(1.94, .3, 1.38, .06, 8), duvetMat, 0, .475, .3);
-    (function wrinkle(g) {          // quelques ondulations sur le dessus de la couette
-      const p = g.attributes.position;
-      for (let i = 0; i < p.count; i++) {
-        const x = p.getX(i), y = p.getY(i), z = p.getZ(i);
-        if (y > .1) p.setY(i, y + .012 * Math.sin(x * 7 + z * 2.3) + .008 * Math.sin(z * 11 - x * 3));
-      }
-      g.computeVertexNormals();
-    })(duvet.geometry);
-    add(roundedBox(1.95, .06, .26, .028), foldMat, 0, .63, -.27);
+    // ------------------------------------------------------------------ le lit, d'après les rendus de Carmelo Crea : un portique en
+    // planches épaisses. Tour de tête profonde (niche avec tableau, tablette, tête de lit capitonnée en deux panneaux), ciel de lit
+    // en caisson suspendu par des tiges (plafond étoilé, bandeau lumineux), socle aux pieds découpés, voilages, jeté de lit.
+    const X = 1, T = .09, ZB = -1.42, ZF = -.96, ZE = 1.24, CB = 2.12, TOP = 2.5;   // demi-largeur, épaisseur, dos et face de la tour, pied, bas et haut du ciel de lit
+    const XB = .96, HB0 = .42, ZP = 1.16, SH = 1.1;                                  // socle : demi-largeur, hauteur, face intérieure du pied ; tablette
+    // panneau du socle : encoche à coins arrondis en bas, il ne reste que deux pieds (comme sur les rendus)
+    function notched(len, h, t, leg = .17, nh = .085, r = .045) {
+      const s = new THREE.Shape(), L = len / 2;
+      s.moveTo(-L, 0); s.lineTo(-L + leg, 0); s.lineTo(-L + leg, nh - r); s.quadraticCurveTo(-L + leg, nh, -L + leg + r, nh);
+      s.lineTo(L - leg - r, nh); s.quadraticCurveTo(L - leg, nh, L - leg, nh - r); s.lineTo(L - leg, 0); s.lineTo(L, 0);
+      s.lineTo(L, h); s.lineTo(-L, h); s.closePath();
+      const g = new THREE.ExtrudeGeometry(s, { depth: t - .008, bevelEnabled: true, bevelSize: .004, bevelThickness: .004, bevelSegments: 1, curveSegments: 8 });
+      g.translate(0, 0, -(t - .008) / 2);
+      return g;
+    }
     for (const s of [-1, 1]) {
-      const g = roundedBox(.74, .18, .46, .08, 8), p = g.attributes.position;
+      const g = notched(ZP - ZF, HB0, .07); g.rotateY(Math.PI / 2);
+      add(grainUV(g, AZ, .9, 2.2), wood, s * (XB - .035), 0, (ZF + ZP) / 2);
+    }
+    add(grainUV(notched(2 * XB, HB0, .07), AX, .9, 2.2), wood, 0, 0, ZP + .035);
+    add(new THREE.BoxGeometry(2 * XB - .14, .03, ZP - ZF), plinthMat, 0, .285, (ZF + ZP) / 2);
+    // matelas, oreillers (deux grands adossés à la tête de lit, deux plus petits devant)
+    add(roundedBox(1.76, .26, 2.06, .05), sheetMat, 0, .43, .11);
+    const pillow = (w, h, d) => {
+      const g = roundedBox(w, h, d, .08, 8), p = g.attributes.position;
       for (let i = 0; i < p.count; i++) {           // oreiller bombé au centre, aplati aux coins
-        const x = p.getX(i) / .37, z = p.getZ(i) / .23, k = Math.max(0, 1 - .55 * (x * x + z * z));
+        const x = p.getX(i) / (w / 2), z = p.getZ(i) / (d / 2), k = Math.max(0, 1 - .55 * (x * x + z * z));
         p.setY(i, p.getY(i) * (.55 + .45 * k));
       }
       g.computeVertexNormals();
-      // posés sur le matelas, adossés à la tête de lit (le haut contre le capitonné), légèrement tournés l'un vers l'autre
-      const m = add(g, pillowMat, s * .41, .7, -.8); m.rotation.set(.3, -s * .05, s * .02);
+      return g;
+    };
+    for (const s of [-1, 1]) {
+      // le haut contre le capitonné, légèrement tournés l'un vers l'autre
+      add(pillow(.8, .2, .5), pillowMat, s * .42, .8, -.79).rotation.set(.62, -s * .04, s * .02);
+      add(pillow(.7, .17, .44), pillowMat, s * .4, .68, -.57).rotation.set(.28, -s * .07, s * .03);
     }
-    // tête de lit capitonnée : panneau, boutons aux sommets des losanges, chapeau en pin cembro
-    const HB = { w: 1.92, h: 1.12, y: .86, z: -1.1 };
-    add(roundedBox(HB.w, HB.h, .12, .035), headMat, 0, HB.y, HB.z);
-    const btnGeo = new THREE.SphereGeometry(.014, 10, 8);
-    for (let i = 1; i < 16; i++) for (let j = 1; j < 8; j++) {
-      if ((i + j) % 2) continue;                    // sommets du losange : coins et centres des motifs
-      add(btnGeo, buttonMat, -HB.w / 2 + i * HB.w / 16, HB.y - HB.h / 2 + j * HB.h / 8, HB.z + .062);
+    // jeté de lit en maille : posé sur la moitié du lit côté pied, il retombe d'un côté presque jusqu'au sol, plis dans la chute
+    (function throwBlanket() {
+      const top = .588, z0 = -.12, z1 = 1.13;
+      const prof = hang => [[0, top], [.84, top], [.895, .562], [.93, .49], [.966, .436], [.985, .4], [.992, .4 - hang]];
+      const table = pts => { const acc = [0]; for (let i = 1; i < pts.length; i++) acc.push(acc[i - 1] + Math.hypot(pts[i][0] - pts[i - 1][0], pts[i][1] - pts[i - 1][1])); return { pts, acc, len: acc[acc.length - 1] }; };
+      const at = (P, s) => {
+        let i = 1; while (i < P.acc.length - 1 && P.acc[i] < s) i++;
+        const k = Math.min(1, (s - P.acc[i - 1]) / (P.acc[i] - P.acc[i - 1])), a = P.pts[i - 1], b = P.pts[i];
+        return [a[0] + (b[0] - a[0]) * k, a[1] + (b[1] - a[1]) * k];
+      };
+      const SIDE = { "-1": table(prof(.1)), "1": table(prof(.3)) };     // long du côté droit (celui que montre le hero), court à gauche
+      const g = new THREE.PlaneGeometry(1, 1, 120, 56), p = g.attributes.position, uv = g.attributes.uv;
+      for (let i = 0; i < p.count; i++) {
+        const u = p.getX(i) + .5, v = p.getY(i) + .5;
+        const s = -SIDE[-1].len + u * (SIDE[-1].len + SIDE[1].len), z = z0 + v * (z1 - z0), side = s < 0 ? -1 : 1;
+        let [x, y] = at(SIDE[side], Math.abs(s));
+        x *= side;
+        const drop = Math.max(0, .4 - y), fold = Math.min(1, (drop / .25) ** 2);   // plis nuls au bord, pleins en bas de la chute
+        x += side * fold * (.012 + .006 * Math.sin(z * 3.1)) * (.5 + .5 * Math.sin(z * 13 + 1.3 * side));   // plis verticaux, toujours vers l'extérieur (jamais dans le bois)
+        y -= fold * .012 * (.5 + .5 * Math.sin(z * 4.3 + 1));                                    // ourlet irrégulier
+        if (y > .55) y += .009 * Math.sin(x * 7 + z * 2.3) + .006 * Math.sin(z * 11 - x * 3);    // ondulations sur le dessus
+        p.setXYZ(i, x, y, z);
+        uv.setXY(i, s * 2.4, z * 2.4);
+      }
+      g.computeVertexNormals();
+      add(g, duvetMat).receiveShadow = false;   // l'ombre du matelas sur la chute crénelait le bord (aliasing de la carte d'ombre)
+    })();
+
+    // tour de tête : deux joues pleine hauteur, fond, bloc de tête dont le dessus fait tablette
+    for (const s of [-1, 1]) add(plank(T, CB, ZF - ZB, AY), wood, s * (X - T / 2), CB / 2, (ZB + ZF) / 2);
+    add(plank(2 * (X - T), CB, .04, AY), wood, 0, CB / 2, ZB + .02);
+    add(plank(2 * (X - T), SH - .3, .36, AX), wood, 0, .3 + (SH - .3) / 2, -1.2);
+    add(plank(2 * (X - T), .035, .42, AX), wood, 0, SH + .0175, -1.19);
+    // tête de lit capitonnée : deux panneaux, boutons aux sommets des losanges
+    const HP = { w: .85, h: .5, y: .85, z: -.97 }, btnGeo = new THREE.SphereGeometry(.014, 10, 8);
+    for (const s of [-1, 1]) {
+      const cx = s * (HP.w / 2 + .008);
+      add(roundedBox(HP.w, HP.h, .1, .03), headMat, cx, HP.y, HP.z);
+      for (let i = 1; i < 8; i++) for (let j = 1; j < 4; j++) {
+        if ((i + j) % 2) continue;
+        add(btnGeo, buttonMat, cx - HP.w / 2 + i * HP.w / 8, HP.y - HP.h / 2 + j * HP.h / 4, HP.z + .052);
+      }
     }
-    add(plank(2.06, .05, .2, AX), wood, 0, HB.y + HB.h / 2 + .025, HB.z);
-    // caisson d'aromathérapie posé sur la tête de lit : bois, façade en jute
-    add(plank(.34, .14, .16, AX), wood, .58, HB.y + HB.h / 2 + .12, HB.z);
-    add(new THREE.BoxGeometry(.26, .09, .01), juteMat, .58, HB.y + HB.h / 2 + .12, HB.z + .081);
-    // baldaquin (d'après l'esquisse) : 4 montants, longerons et traverses qui dépassent, plafond étoilé et bandeau lumineux
-    const PX = .995, PZ0 = -1.15, PZ1 = 1.08, TOP = 2.3;
-    for (const s of [-1, 1]) for (const z of [PZ0, PZ1]) add(plank(.07, TOP, .07, AY), wood, s * PX, TOP / 2, z);
-    for (const s of [-1, 1]) add(plank(.07, .09, 2.56, AZ), wood, s * PX, TOP + .045, (PZ0 + PZ1) / 2);
-    for (const z of [PZ0, PZ1]) add(plank(2.34, .07, .07, AX), wood, 0, TOP - .035, z);
-    add(new THREE.BoxGeometry(1.92, .03, 2.18), ceilMat, 0, TOP - .055, (PZ0 + PZ1) / 2).castShadow = false;
+    // tableau de la niche : giclures noires sur toile claire, comme sur les rendus
+    const art = (() => {
+      const c = document.createElement("canvas"); c.width = 640; c.height = 420;
+      const g = c.getContext("2d");
+      g.fillStyle = "#e9e5de"; g.fillRect(0, 0, 640, 420); g.lineCap = "round";
+      for (let n = 0; n < 260; n++) {
+        const x = rnd() * 640, y = rnd() * 420, d = () => (rnd() - .5);
+        g.strokeStyle = rnd() < .82 ? `rgba(16,16,18,${(.6 + rnd() * .4).toFixed(2)})` : `rgba(118,114,108,${(.5 + rnd() * .4).toFixed(2)})`;
+        g.lineWidth = .6 + Math.pow(rnd(), 3) * 7;
+        g.beginPath(); g.moveTo(x, y);
+        g.bezierCurveTo(x + d() * 260, y + d() * 200, x + d() * 260, y + d() * 200, x + d() * 180, y + d() * 140);
+        g.stroke();
+      }
+      g.fillStyle = "rgba(16,16,18,.85)";
+      for (let n = 0; n < 160; n++) { g.beginPath(); g.arc(rnd() * 640, rnd() * 420, .5 + Math.pow(rnd(), 4) * 6, 0, 7); g.fill(); }
+      const t = new THREE.CanvasTexture(c); t.colorSpace = THREE.SRGBColorSpace; t.anisotropy = aniso; return t;
+    })();
+    add(new THREE.PlaneGeometry(1.02, .67), new THREE.MeshStandardMaterial({ map: art, roughness: .8 }), 0, 1.66, ZB + .045).castShadow = false;
+    // sur la tablette : le caisson d'aromathérapie (bois, façade en jute) à gauche, des livres à droite
+    add(plank(.34, .14, .17, AX), wood, -.52, SH + .035 + .07, -1.17);
+    add(new THREE.BoxGeometry(.26, .09, .01), juteMat, -.52, SH + .035 + .07, -1.17 + .086);
+    const bookMats = [0x1b1c20, 0xd9d3c9, 0x34302b, 0x121316, 0x8b857c].map(c => new THREE.MeshStandardMaterial({ color: c, roughness: .8 }));
+    for (let n = 0, bx = .46; n < 7; n++) {
+      const w = .022 + rnd() * .024, h = .16 + rnd() * .09;
+      add(new THREE.BoxGeometry(w, h, .15), bookMats[n % 5], bx + w / 2, SH + .035 + h / 2, -1.2);
+      bx += w + .003;
+    }
+
+    // ciel de lit : caisson sur toute la longueur, plafond en retrait, suspendu par quatre tiges qui se perdent dans le noir
+    const CH = TOP - CB, CZ = (ZB + ZE) / 2, CL = ZE - ZB, CEIL = CB + .21;
+    for (const s of [-1, 1]) add(plank(T, CH, CL, AZ), wood, s * (X - T / 2), CB + CH / 2, CZ);
+    for (const z of [ZB + T / 2, ZE - T / 2]) add(plank(2 * (X - T), CH, T, AX), wood, 0, CB + CH / 2, z);
+    add(plank(2 * X, .04, CL, AZ), wood, 0, TOP + .02, CZ);
+    add(new THREE.BoxGeometry(2 * (X - T), .02, CL - 2 * T), ceilMat, 0, CEIL + .01, CZ).castShadow = false;
+    const fade = (() => {
+      const c = document.createElement("canvas"); c.width = 2; c.height = 64;
+      const g = c.getContext("2d"), gr = g.createLinearGradient(0, 0, 0, 64); gr.addColorStop(0, "#000"); gr.addColorStop(1, "#fff");
+      g.fillStyle = gr; g.fillRect(0, 0, 2, 64); return new THREE.CanvasTexture(c);
+    })();
+    const rodMat = new THREE.MeshStandardMaterial({ color: 0x2a2c31, roughness: .35, metalness: .7, transparent: true, alphaMap: fade });
+    for (const x of [-.8, .8]) for (const z of [ZB + .3, ZE - .3]) add(new THREE.CylinderGeometry(.008, .008, 1.4, 6, 1, true), rodMat, x, TOP + .74, z).castShadow = false;
     const led = new THREE.Group(); model.add(led);
-    const L = { w: 1.82, d: 2.08, y: TOP - .075, z: (PZ0 + PZ1) / 2 };
+    const L = { w: 2 * (X - T) - .05, d: CL - 2 * T - .05, y: CEIL - .012, z: CZ };
     for (const s of [-1, 1]) {
       const a = new THREE.Mesh(new THREE.BoxGeometry(L.w, .012, .02), ledMat); a.position.set(0, L.y, L.z + s * L.d / 2); led.add(a);
       const b = new THREE.Mesh(new THREE.BoxGeometry(.02, .012, L.d), ledMat); b.position.set(s * L.w / 2, L.y, L.z); led.add(b);
     }
     model.add(glowA, glowB);
-    // halo sous le plafond : la lumière du bandeau qui baigne le baldaquin (plan additif, teinté comme le canal)
+    // halo sous le plafond : la lumière du bandeau qui baigne le ciel de lit (plan additif, teinté comme le canal)
     const haloMat = new THREE.MeshBasicMaterial({ color: 0xffffff, transparent: true, opacity: .7, depthWrite: false, blending: THREE.AdditiveBlending, toneMapped: false, alphaMap: radial([[0, "#fff"], [.55, "#777"], [1, "#000"]]) });
-    const halo = new THREE.Mesh(new THREE.PlaneGeometry(1.9, 2.15).rotateX(Math.PI / 2), haloMat);
-    halo.position.set(0, TOP - .08, (PZ0 + PZ1) / 2);
+    const halo = new THREE.Mesh(new THREE.PlaneGeometry(1.7, 2.3).rotateX(Math.PI / 2), haloMat);
+    halo.position.set(0, CEIL - .015, CZ + .2);
     model.add(halo);
-    // étoiles : fibres optiques sous le plafond, scintillement dans le shader
-    const NS = 120, sp = new Float32Array(NS * 3), sd = new Float32Array(NS);
-    for (let i = 0; i < NS; i++) { sp[i * 3] = (rnd() - .5) * 1.7; sp[i * 3 + 1] = TOP - .072; sp[i * 3 + 2] = L.z + (rnd() - .5) * 1.95; sd[i] = rnd(); }
+    // voilages accrochés sous le ciel de lit : un rideau plus dense du côté gauche, des voiles fronces aux angles
+    const veil = (color, opacity) => new THREE.MeshStandardMaterial({ color, roughness: 1, envMapIntensity: .25, transparent: true, opacity, side: THREE.DoubleSide, depthWrite: false });
+    const sheer = veil(0xf2ede6, .14), dense = veil(0x8e8983, .5);
+    function curtain(x, z0, len, folds, amp, mat) {
+      const h = CEIL - .46, g = new THREE.PlaneGeometry(len, h, folds * 10, 6), p = g.attributes.position;
+      for (let i = 0; i < p.count; i++) {
+        const u = p.getX(i) / len + .5, v = p.getY(i) / h + .5;     // le long de la tringle, du bas vers le haut
+        p.setZ(i, amp * Math.sin(u * folds * Math.PI * 2) * (1.25 - .25 * v));
+      }
+      g.computeVertexNormals();
+      const n = g.attributes.normal;                  // ombrage des plis adouci : un voile, pas des lames
+      for (let i = 0; i < n.count; i++) n.setXYZ(i, n.getX(i) * .35, n.getY(i) * .35, n.getZ(i) * .35 + .65);
+      g.normalizeNormals();
+      g.rotateY(Math.PI / 2);
+      const m = new THREE.Mesh(g, mat); m.position.set(x, .46 + h / 2, z0 + len / 2); m.renderOrder = 2; model.add(m);
+    }
+    const XC = X - T + .025;
+    curtain(-XC, ZF + .02, 1.3, 15, .011, dense);
+    curtain(-XC, ZE - T - .55, .5, 7, .014, sheer);
+    curtain(XC, ZF + .02, .42, 6, .014, sheer);
+    curtain(XC, ZE - T - .5, .45, 6, .014, sheer);
+    // étoiles : fibres optiques dans le plafond du ciel de lit, scintillement dans le shader
+    const NS = 130, sp = new Float32Array(NS * 3), sd = new Float32Array(NS);
+    for (let i = 0; i < NS; i++) { sp[i * 3] = (rnd() - .5) * 1.6; sp[i * 3 + 1] = CEIL - .006; sp[i * 3 + 2] = ZF + .06 + rnd() * (ZE - T - .12 - ZF); sd[i] = rnd(); }
     const starGeo = new THREE.BufferGeometry();
     starGeo.setAttribute("position", new THREE.BufferAttribute(sp, 3));
     starGeo.setAttribute("aSeed", new THREE.BufferAttribute(sd, 1));
@@ -303,7 +399,7 @@ SECTIONS.push({
       transparent: true, depthWrite: false, blending: THREE.AdditiveBlending,
     });
     model.add(new THREE.Points(starGeo, starMat));
-    const MODEL_W = 2.62, MODEL_H = 2.46, CENTER_Y = 1.18;
+    const MODEL_W = 2.86, MODEL_H = 2.58, CENTER_Y = 1.24;
 
     // ------------------------------------------------------------------ sol : il se fond dans le fond de la page, ombre douce sous le lit
     const floor = new THREE.Mesh(new THREE.PlaneGeometry(12, 12).rotateX(-Math.PI / 2),
@@ -316,7 +412,7 @@ SECTIONS.push({
     model.add(blob);
 
     // ------------------------------------------------------------------ fumée d'aromathérapie : une brume qui gagne toute la scène
-    // et des volutes qui montent du caisson posé sur la tête de lit ; elle n'apparaît que sous la lumière du canal aromathérapie
+    // et des volutes qui montent du caisson posé sur la tablette ; elle n'apparaît que sous la lumière du canal aromathérapie
     const smokeTex = (() => {
       const c = document.createElement("canvas"); c.width = c.height = 128;
       const g = c.getContext("2d");
@@ -342,7 +438,7 @@ SECTIONS.push({
       smoke.haze.push({ sp, vx: (rnd() - .5) * .08, vr: (rnd() - .5) * .1, a: .14 + rnd() * .12, y0: sp.position.y, ph: rnd() * 6.28 });
     }
     for (let n = 0; n < 14; n++) smoke.wisps.push({ sp: puff(model, .3), t: n / 14, life: 5 + rnd() * 3, dx: (rnd() - .5) * .6, dz: .15 + rnd() * .45, a: .28 + rnd() * .14 });
-    const SRC = { x: .58, y: .86 + 1.12 / 2 + .2, z: -1.1 };   // haut du caisson d'aromathérapie
+    const SRC = { x: -.52, y: SH + .035 + .16, z: -1.17 };   // haut du caisson d'aromathérapie
     function updateSmoke(dt, now) {
       smoke.level += (smoke.target - smoke.level) * Math.min(1, dt * 1.1);
       const L = smoke.level, on = L > .004;
@@ -358,7 +454,7 @@ SECTIONS.push({
         w.sp.visible = on; if (!on) continue;
         w.t = (w.t + dt / w.life) % 1;
         const t = w.t;
-        w.sp.position.set(SRC.x + w.dx * t, SRC.y + t * 1.05, SRC.z + w.dz * t);
+        w.sp.position.set(SRC.x + w.dx * t, SRC.y + t * .8, SRC.z + w.dz * t);
         w.sp.scale.setScalar(.22 + t * 1.15);
         w.sp.material.rotation += dt * .35;
         w.sp.material.opacity = w.a * L * Math.sin(Math.PI * t); w.sp.material.color.copy(smokeCol);
@@ -385,12 +481,12 @@ SECTIONS.push({
     let W = 1, Hh = 1;
     const introRect = () => (innerWidth > 900 ? { cx: .5, cy: .47, w: .44, h: .66 } : { cx: .5, cy: .5, w: .74, h: .44 });
     function heroRect() {
-      if (innerWidth > 1200) return { cx: .71, cy: .57, w: .46, h: .74 };
-      if (innerWidth > 900) return { cx: .745, cy: .58, w: .4, h: .7 };   // 900-1200 px : le texte prend plus de place
+      if (innerWidth > 1200) return { cx: .71, cy: .55, w: .46, h: .7 };     // le lit est plus haut qu'avant : place pour l'icône dessous
+      if (innerWidth > 900) return { cx: .745, cy: .56, w: .4, h: .66 };   // 900-1200 px : le texte prend plus de place
       const r0 = root.getBoundingClientRect().top, rel = el => (el.getBoundingClientRect().bottom - r0) / Hh;
       const top = rel($(".hero__actions")) + .02, bottom = ($(".hero__proof").getBoundingClientRect().top - r0) / Hh - .01;
       const bot = bottom - .055;                      // place pour l'icône « glisser pour tourner » sous le lit
-      return { cx: .5, cy: (top + bot) / 2, w: 1.02, h: Math.max(.2, bot - top) };
+      return { cx: .5, cy: (top + bot) / 2, w: 1.12, h: Math.max(.2, bot - top) };
     }
     function applyCamera() {
       camera.aspect = W / Hh;
@@ -492,7 +588,7 @@ SECTIONS.push({
     };
     const hint = $(".hero__hint");
     gsap.set(hint, { xPercent: -50, yPercent: -50 });
-    const FRONT = new V3(0, 0, 1.15), proj = new V3();   // le sol juste devant le pied du lit
+    const FRONT = new V3(0, 0, 1.4), proj = new V3();   // le sol juste devant le pied du lit
     function placeHint() {                             // sous le lit, quel que soit le cadrage
       proj.copy(FRONT).project(camera);
       hint.style.left = `${(proj.x + 1) / 2 * W}px`;
