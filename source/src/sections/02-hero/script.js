@@ -1,6 +1,6 @@
 /* Hero · 3D Animation #11 (objet 3D en studio, caméra qui passe d'une vue à l'autre) + compteur à rouleaux (Hero #8), même
    moteur que la charpente de Constantin Besomi. Le lit « L'Éveil des sens » est modélisé ici d'après les rendus de Carmelo Crea :
-   portique en pin cembro (tour de tête avec niche, tableau et tablette, ciel de lit en caisson suspendu, socle aux pieds
+   portique en pin cembro blanchi, gris délavé (tour de tête avec niche, tableau et tablette, ciel de lit en caisson suspendu, socle aux pieds
    découpés), tête de lit capitonnée en deux panneaux, voilages, jeté de lit, caisson d'aromathérapie, plafond étoilé. Préchargement : un tour complet ; le compteur va de 0 à 100 et la lumière passe par les
    quatre canaux. À la fin du tour, la caméra cadre le lit à droite et le texte du hero se pose. QA : ?pre=<secondes>. */
 SECTIONS.push({
@@ -140,7 +140,7 @@ SECTIONS.push({
       if (srgb) t.colorSpace = THREE.SRGBColorSpace;
       return t;
     };
-    const cembroMap = tex(IMG["tex-cembro"], true), cembroN = tex(IMG["tex-cembro-n"]);
+    const cembroMap = tex(IMG["tex-bois-gris"], true), cembroN = tex(IMG["tex-cembro-n"]);   // pin cembro blanchi, gris délavé comme sur les rendus
     // textures dessinées dans un canvas : relief de la tête de lit capitonnée, maille de la couette, dégradés du sol
     function normalTex(size, height, repeatX, repeatY) {
       const c = document.createElement("canvas"); c.width = c.height = size;
@@ -172,7 +172,7 @@ SECTIONS.push({
     }
 
     // ------------------------------------------------------------------ matériaux
-    const wood = new THREE.MeshStandardMaterial({ map: cembroMap, normalMap: cembroN, normalScale: new THREE.Vector2(.55, .55), roughness: .46, metalness: 0, envMapIntensity: .7 });
+    const wood = new THREE.MeshStandardMaterial({ map: cembroMap, normalMap: cembroN, normalScale: new THREE.Vector2(.55, .55), roughness: .6, metalness: 0, envMapIntensity: .55 });
     const fabric = (color, o = {}) => new THREE.MeshPhysicalMaterial(Object.assign({ color, roughness: .9, metalness: 0, sheen: 1, sheenRoughness: .65, sheenColor: new THREE.Color(0xfff4e8), envMapIntensity: .5 }, o));
     const headMat = fabric(0xcbc1b3, { normalMap: tuftN, normalScale: new THREE.Vector2(1.5, 1.5) });
     const sheetMat = fabric(0xeeeae3, { sheen: .6 });
